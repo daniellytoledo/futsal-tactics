@@ -1,22 +1,24 @@
 
 /*
- * CABO VERDE — VARIANTE 1
+ * CABO VERDE — VARIANTES 1 E 2
  *
- * 1. Jogador 4 atravessa o campo e leva o marcador.
- * 2. Jogador 2 aproxima-se devagar do jogador 1.
- *    Jogador 3 ocupa a posição deixada pelo 2.
- * 3. Jogador 2 acelera paralelo à lateral.
- * 4. Jogador 1 passa para os pés do jogador 2.
+ * VARIANTE 1:
+ * O jogador 2 desmarca-se e recebe o passe.
  *
- * Campo SVG: viewBox="0 0 1000 700".
+ * VARIANTE 2:
+ * O adversário acompanha o jogador 2.
+ * O jogador 1 passa para o jogador 3.
+ *
+ * VARIANTE 3:
+ * Ainda por definir.
  */
 
-// =============================================
-// 1. COORDENADAS DA JOGADA
-// =============================================
+// ==========================================
+// 1. POSIÇÕES
+// ==========================================
 
 const P = {
-    // Jogador 1: cobrança lateral
+    // Jogador 1 — cobrança lateral
     p1: { x: 750, y: 18 },
 
     // Jogador 2
@@ -33,17 +35,21 @@ const P = {
     p4Finish: { x: 550, y: 630 },
 
     // Marcador do jogador 4
-    defenderStart: { x: 485, y: 105 },
-    defenderFinish: { x: 485, y: 600 },
+    defender4Start: { x: 485, y: 105 },
+    defender4Finish: { x: 485, y: 600 },
+
+    // Marcador do jogador 2
+    defender2Start: { x: 688, y: 318 },
 
     // Bola
     ballStart: { x: 750, y: 42 },
-    ballFinish: { x: 545, y: 68 }
+    ballAt2: { x: 545, y: 68 },
+    ballAt3: { x: 750, y: 315 }
 };
 
-// =============================================
-// 2. ETAPAS E DURAÇÕES
-// =============================================
+// ==========================================
+// 2. ETAPAS E VELOCIDADES
+// ==========================================
 
 const stages = [
     {
@@ -59,14 +65,14 @@ const stages = [
         duration: 1000
     },
     {
-        title: "Passe do jogador 1 para o 2",
+        title: "Passe do jogador 1",
         duration: 1200
     }
 ];
 
-// =============================================
-// 3. ELEMENTOS DA PÁGINA
-// =============================================
+// ==========================================
+// 3. ELEMENTOS HTML E SVG
+// ==========================================
 
 const elements = {
     p1: document.querySelector("#player1"),
@@ -74,10 +80,10 @@ const elements = {
     p3: document.querySelector("#player3"),
     p4: document.querySelector("#player4"),
 
+    defender2: document.querySelector("#defender2"),
     defender4: document.querySelector("#defender4"),
 
     ball: document.querySelector("#ball"),
-
     guides: document.querySelector("#guides"),
 
     play: document.querySelector("#play"),
@@ -99,16 +105,15 @@ const elements = {
     ]
 };
 
-// =============================================
-// 4. SETAS
-// =============================================
-
 const guides = {
     move4: document.querySelector("#move4"),
-    defender: document.querySelector("#moveDefender"),
+    defender4: document.querySelector("#moveDefender"),
+
     move2Slow: document.querySelector("#move2Slow"),
     move3: document.querySelector("#move3"),
     move2Sprint: document.querySelector("#move2Sprint"),
+
+    defender2: document.querySelector("#moveDefender2"),
     pass: document.querySelector("#passGuide")
 };
 
@@ -118,10 +123,11 @@ const guideNumbers = [
     )
 ];
 
-// =============================================
-// 5. ESTADO DA ANIMAÇÃO
-// =============================================
+// ==========================================
+// 4. ESTADO DA ANIMAÇÃO
+// ==========================================
 
+let currentVariant = "1";
 let currentStep = 0;
 let progress = 0;
 let playing = false;
@@ -130,12 +136,9 @@ let frameId = null;
 let lastFrame = null;
 let runToken = 0;
 
-// Variante atualmente selecionada
-let currentVariant = "1";
-
-// =============================================
-// 6. FUNÇÕES AUXILIARES
-// =============================================
+// ==========================================
+// 5. FUNÇÕES AUXILIARES
+// ==========================================
 
 function clamp(value) {
     return Math.max(0, Math.min(1, value));
@@ -159,57 +162,37 @@ function place(element, position) {
     );
 }
 
-// =============================================
-// 7. MOVIMENTAÇÃO DO JOGADOR 4
-// =============================================
-
-function getPlayer4Position(t) {
-
-    // Etapa 1: atravessa o campo em linha reta.
-    if (currentStep === 0) {
-        return between(
-            P.p4Start,
-            P.p4Finish,
-            t
-        );
-    }
-
-    // Nas etapas seguintes permanece
-    // na posição de destino.
-    return P.p4Finish;
+function placeCircle(element, position) {
+    element.setAttribute("cx", position.x);
+    element.setAttribute("cy", position.y);
 }
 
-// =============================================
-// 8. MOVIMENTAÇÃO DO ADVERSÁRIO
-// =============================================
+// Atualiza uma seta SVG.
+function setGuide(id, start, end) {
+    const path = document.querySelector(`#${id}`);
 
-function getDefenderPosition(t) {
-
-    // Acompanha o jogador 4 na primeira etapa.
-    if (currentStep === 0) {
-        return between(
-            P.defenderStart,
-            P.defenderFinish,
-            t
-        );
+    if (!path) {
+        return;
     }
 
-    return P.defenderFinish;
+    path.setAttribute(
+        "d",
+        `M${start.x} ${start.y} L${end.x} ${end.y}`
+    );
 }
 
-// =============================================
-// 9. MOVIMENTAÇÃO DO JOGADOR 2
-// =============================================
+// ==========================================
+// 6. POSIÇÃO DO JOGADOR 2
+// ==========================================
 
 function getPlayer2Position(t) {
 
-    // Etapa 1: mantém a posição.
+    // Etapa 1: aguarda.
     if (currentStep === 0) {
         return P.p2Start;
     }
 
-    // Etapa 2: aproxima-se lentamente
-    // do jogador 1 junto à linha lateral.
+    // Etapa 2: aproximação lenta.
     if (currentStep === 1) {
         return between(
             P.p2Start,
@@ -218,8 +201,7 @@ function getPlayer2Position(t) {
         );
     }
 
-    // Etapa 3: arranca rapidamente,
-    // paralelo à lateral.
+    // Etapa 3: corrida rápida pela lateral.
     if (currentStep === 2) {
         return between(
             P.p2Near,
@@ -228,23 +210,20 @@ function getPlayer2Position(t) {
         );
     }
 
-    // Etapa 4: recebe o passe mais à frente.
+    // Etapa 4: posição final.
     return P.p2Finish;
 }
 
-// =============================================
-// 10. MOVIMENTAÇÃO DO JOGADOR 3
-// =============================================
+// ==========================================
+// 7. POSIÇÃO DO JOGADOR 3
+// ==========================================
 
 function getPlayer3Position(t) {
 
-    // Aguarda durante a etapa 1.
     if (currentStep === 0) {
         return P.p3Start;
     }
 
-    // Etapa 2: ocupa o espaço deixado
-    // pelo jogador 2.
     if (currentStep === 1) {
         return between(
             P.p3Start,
@@ -253,78 +232,206 @@ function getPlayer3Position(t) {
         );
     }
 
-    // Mantém a posição nas etapas seguintes.
     return P.p3Finish;
 }
 
-// =============================================
-// 11. MOVIMENTAÇÃO DA BOLA
-// =============================================
+// ==========================================
+// 8. POSIÇÃO DO JOGADOR 4
+// ==========================================
+
+function getPlayer4Position(t) {
+
+    if (currentStep === 0) {
+        return between(
+            P.p4Start,
+            P.p4Finish,
+            t
+        );
+    }
+
+    return P.p4Finish;
+}
+
+// ==========================================
+// 9. MARCADOR DO JOGADOR 4
+// ==========================================
+
+function getDefender4Position(t) {
+
+    if (currentStep === 0) {
+        return between(
+            P.defender4Start,
+            P.defender4Finish,
+            t
+        );
+    }
+
+    return P.defender4Finish;
+}
+
+// ==========================================
+// 10. MARCADOR DO JOGADOR 2
+// ==========================================
+
+function getDefender2Position(t) {
+
+    // Na Variante 1, fica parado.
+    if (currentVariant !== "2") {
+        return P.defender2Start;
+    }
+
+    // Na primeira etapa, ainda está parado.
+    if (currentStep === 0) {
+        return P.defender2Start;
+    }
+
+    // Na Variante 2, acompanha o jogador 2
+    // durante a aproximação e a corrida.
+    const playerPosition = getPlayer2Position(t);
+
+    return {
+        x: playerPosition.x - 62,
+        y: playerPosition.y + 3
+    };
+}
+
+// ==========================================
+// 11. MOVIMENTO DA BOLA
+// ==========================================
 
 function getBallPosition(t) {
 
-    // A bola permanece com o jogador 1
-    // durante as primeiras três etapas.
+    // Etapas 1, 2 e 3:
+    // o jogador 1 ainda está com a bola.
     if (currentStep < 3) {
         return P.ballStart;
     }
 
-    // Etapa 4: passe para o jogador 2
-    // em direção ao meio-campo adversário.
-    return between(
-        P.ballStart,
-        P.ballFinish,
-        t
-    );
+    // VARIANTE 1: passe para o jogador 2.
+    if (currentVariant === "1") {
+        return between(
+            P.ballStart,
+            P.ballAt2,
+            t
+        );
+    }
+
+    // VARIANTE 2: passe para o jogador 3.
+    if (currentVariant === "2") {
+        return between(
+            P.ballStart,
+            P.ballAt3,
+            t
+        );
+    }
+
+    return P.ballStart;
 }
 
-// =============================================
-// 12. SETAS E NUMERAÇÃO
-// =============================================
+// ==========================================
+// 12. SETAS DE MOVIMENTO
+// ==========================================
 
 function renderGuides() {
 
     // Esconde todas as setas.
     Object.values(guides).forEach((path) => {
-        path.style.opacity = "0";
+        if (path) {
+            path.style.opacity = "0";
+        }
     });
 
-    // Esconde todos os números.
+    // Esconde os números.
     guideNumbers.forEach((number) => {
         number.style.opacity = "0";
     });
 
-    // Etapa 1: jogador 4 e adversário.
-    if (currentStep === 0) {
-        guides.move4.style.opacity = "1";
-        guides.defender.style.opacity = "1";
+    // Variante sem animação.
+    if (currentVariant === "3") {
+        return;
     }
 
-    // Etapa 2: jogadores 2 e 3.
+    // ETAPA 1:
+    // O jogador 4 afasta o marcador.
+    if (currentStep === 0) {
+        guides.move4.style.opacity = "1";
+        guides.defender4.style.opacity = "1";
+    }
+
+    // ETAPA 2:
+    // O jogador 2 aproxima-se.
+    // O jogador 3 ocupa o espaço deixado.
     if (currentStep === 1) {
         guides.move2Slow.style.opacity = "1";
         guides.move3.style.opacity = "1";
+
+        // Variante 2:
+        // o marcador acompanha o jogador 2.
+        if (currentVariant === "2" && guides.defender2) {
+
+            const start = P.defender2Start;
+
+            const end = {
+                x: P.p2Near.x - 62,
+                y: P.p2Near.y + 3
+            };
+
+            setGuide("moveDefender2", start, end);
+
+            guides.defender2.style.opacity = "1";
+        }
     }
 
-    // Etapa 3: arranque do jogador 2.
+    // ETAPA 3:
+    // Corrida rápida do jogador 2.
     if (currentStep === 2) {
         guides.move2Sprint.style.opacity = "1";
+
+        if (currentVariant === "2" && guides.defender2) {
+
+            const start = {
+                x: P.p2Near.x - 62,
+                y: P.p2Near.y + 3
+            };
+
+            const end = {
+                x: P.p2Finish.x - 62,
+                y: P.p2Finish.y + 3
+            };
+
+            setGuide("moveDefender2", start, end);
+
+            guides.defender2.style.opacity = "1";
+        }
     }
 
-    // Etapa 4: passe lateral.
+    // ETAPA 4:
+    // Destino do passe depende da variante.
     if (currentStep === 3) {
+
+        const destination =
+            currentVariant === "1"
+                ? P.ballAt2
+                : P.ballAt3;
+
+        setGuide(
+            "passGuide",
+            P.ballStart,
+            destination
+        );
+
         guides.pass.style.opacity = "1";
     }
 
-    // Mostra a numeração da etapa.
+    // Destaca o número da etapa.
     if (guideNumbers[currentStep]) {
         guideNumbers[currentStep].style.opacity = "1";
     }
 }
 
-// =============================================
-// 13. DESENHAR ESTADO ATUAL
-// =============================================
+// ==========================================
+// 13. DESENHAR A ANIMAÇÃO
+// ==========================================
 
 function render() {
     const t = clamp(progress);
@@ -332,7 +439,7 @@ function render() {
     // Jogador 1 permanece no lateral.
     place(elements.p1, P.p1);
 
-    // Movimentação dos outros jogadores.
+    // Jogadores 2, 3 e 4.
     place(
         elements.p2,
         getPlayer2Position(t)
@@ -348,18 +455,19 @@ function render() {
         getPlayer4Position(t)
     );
 
-    // Movimentação do marcador do jogador 4.
-    const defenderPosition = getDefenderPosition(t);
-
-    elements.defender4.setAttribute(
-        "cx",
-        defenderPosition.x
+    // Marcador do jogador 4.
+    placeCircle(
+        elements.defender4,
+        getDefender4Position(t)
     );
 
-    elements.defender4.setAttribute(
-        "cy",
-        defenderPosition.y
-    );
+    // Marcador do jogador 2.
+    if (elements.defender2) {
+        placeCircle(
+            elements.defender2,
+            getDefender2Position(t)
+        );
+    }
 
     // Bola.
     place(
@@ -367,7 +475,7 @@ function render() {
         getBallPosition(t)
     );
 
-    // Setas e etapas.
+    // Setas da etapa.
     elements.guides.setAttribute(
         "class",
         `show-${currentStep}`
@@ -375,6 +483,7 @@ function render() {
 
     renderGuides();
 
+    // Destaca a etapa no painel.
     elements.steps.forEach((li, index) => {
         li.classList.toggle(
             "active",
@@ -382,6 +491,7 @@ function render() {
         );
     });
 
+    // Informações da reprodução.
     elements.status.textContent =
         `${currentStep + 1}/4 · ${stages[currentStep].title}`;
 
@@ -390,15 +500,17 @@ function render() {
         : "▶ Reproduzir";
 }
 
-// =============================================
-// 14. PARAR E REINICIAR
-// =============================================
+// ==========================================
+// 14. PARAR, REINICIAR E NAVEGAR
+// ==========================================
 
 function stop() {
     playing = false;
     runToken++;
 
-    cancelAnimationFrame(frameId);
+    if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+    }
 
     frameId = null;
     lastFrame = null;
@@ -414,7 +526,9 @@ function reset() {
 }
 
 function goTo(index) {
-    if (currentVariant !== "1") {
+
+    // Permite navegar nas variantes 1 e 2.
+    if (currentVariant === "3") {
         return;
     }
 
@@ -430,9 +544,9 @@ function goTo(index) {
     render();
 }
 
-// =============================================
-// 15. MOTOR DE ANIMAÇÃO
-// =============================================
+// ==========================================
+// 15. MOTOR DA ANIMAÇÃO
+// ==========================================
 
 function tick(time, token) {
 
@@ -454,37 +568,41 @@ function tick(time, token) {
     const speed = Number(elements.speed.value);
 
     progress +=
-        (delta * speed) / stages[currentStep].duration;
+        (delta * speed) /
+        stages[currentStep].duration;
 
+    // Quando a etapa termina:
     if (progress >= 1) {
         progress = 1;
+
         render();
 
-        // Termina na última etapa.
+        // Se for a última etapa, termina.
         if (currentStep === stages.length - 1) {
             stop();
             render();
             return;
         }
 
+        // Avança para a próxima etapa.
         currentStep++;
         progress = 0;
     }
 
     render();
 
-    frameId = requestAnimationFrame((time) => {
-        tick(time, token);
+    frameId = requestAnimationFrame((nextTime) => {
+        tick(nextTime, token);
     });
 }
 
-// =============================================
+// ==========================================
 // 16. REPRODUZIR E PAUSAR
-// =============================================
+// ==========================================
 
 function togglePlay() {
 
-    if (currentVariant !== "1") {
+    if (currentVariant === "3") {
         return;
     }
 
@@ -494,7 +612,7 @@ function togglePlay() {
         return;
     }
 
-    // Reinicia se a jogada já terminou.
+    // Reinicia se a jogada terminou.
     if (
         currentStep === stages.length - 1 &&
         progress >= 1
@@ -515,56 +633,113 @@ function togglePlay() {
     });
 }
 
-// =============================================
-// 17. SELETOR DE VARIANTES
-// =============================================
+// ==========================================
+// 17. SELEÇÃO DAS VARIANTES
+// ==========================================
 
 function changeVariant(value) {
     stop();
 
     currentVariant = value;
-
     currentStep = 0;
     progress = 0;
 
-    const available = value === "1";
+    const available =
+        value === "1" || value === "2";
 
-    // Mostra a sequência apenas para a variante 1.
-    elements.stepsList.hidden = !available;
-    elements.attention.hidden = !available;
+    // Mostra a sequência das variantes disponíveis.
+    elements.stepsList.style.display =
+        available ? "" : "none";
 
-    // Mostra aviso para as variantes futuras.
-    elements.variantNotice.hidden = available;
+    elements.attention.style.display =
+        available ? "" : "none";
 
-    // Desativa os controlos enquanto a variante
-    // ainda não tiver uma animação implementada.
+    elements.variantNotice.style.display =
+        available ? "none" : "block";
+
+    // Controlos.
     elements.play.disabled = !available;
     elements.restart.disabled = !available;
     elements.previous.disabled = !available;
     elements.next.disabled = !available;
 
-    if (available) {
-        render();
-    } else {
-        // Mostra o campo sem setas e sem animação.
-        Object.values(guides).forEach((path) => {
-            path.style.opacity = "0";
-        });
+    const finalStep = elements.steps[3];
 
-        guideNumbers.forEach((number) => {
-            number.style.opacity = "0";
-        });
+    const finalTitle =
+        finalStep.querySelector("strong");
 
-        elements.play.textContent = "▶ Reproduzir";
+    const finalDescription =
+        finalStep.querySelector("span");
 
+    const attentionText =
+        elements.attention.querySelector("p");
+
+    // VARIANTE 1
+    if (value === "1") {
+
+        stages[3].title =
+            "Passe do jogador 1 para o 2";
+
+        finalTitle.textContent =
+            "04 · Passe do jogador 1 para o 2";
+
+        finalDescription.textContent =
+            "O jogador 1 passa a bola em profundidade " +
+            "para o jogador 2, que se desmarcou " +
+            "pela linha lateral em direção " +
+            "ao campo adversário.";
+
+        attentionText.textContent =
+            "O jogador 4 afasta o seu marcador. " +
+            "O jogador 2 aproxima-se devagar " +
+            "e depois acelera pela lateral. " +
+            "O jogador 3 ocupa a posição deixada " +
+            "pelo jogador 2. O passe final " +
+            "é feito para o jogador 2.";
+    }
+
+    // VARIANTE 2
+    if (value === "2") {
+
+        stages[3].title =
+            "Passe do jogador 1 para o 3";
+
+        finalTitle.textContent =
+            "04 · Passe do jogador 1 para o 3";
+
+        finalDescription.textContent =
+            "O adversário acompanha a movimentação " +
+            "do jogador 2. Quando o jogador 2 acelera " +
+            "pela linha lateral, o jogador 1 passa " +
+            "a bola para o jogador 3, que ocupa " +
+            "a posição anteriormente deixada pelo 2.";
+
+        attentionText.textContent =
+            "O jogador 4 afasta o seu marcador. " +
+            "O jogador 2 leva consigo o adversário " +
+            "durante a aproximação e a corrida rápida. " +
+            "O jogador 3 ocupa o espaço deixado. " +
+            "Como o jogador 2 continua marcado, " +
+            "o jogador 1 passa para o jogador 3.";
+    }
+
+    // VARIANTE 3
+    if (value === "3") {
+        stages[3].title = "Por definir";
+    }
+
+    // Reposição das posições iniciais.
+    render();
+
+    if (!available) {
         elements.status.textContent =
             `Variante ${value} · Por definir`;
     }
 }
 
-// =============================================
+// ==========================================
 // 18. EVENTOS DOS BOTÕES
-// =============================================
+// ==========================================
 
 elements.restart.addEventListener(
     "click",
@@ -586,22 +761,24 @@ elements.play.addEventListener(
     togglePlay
 );
 
-// Seleção direta das etapas.
+// Seleção de etapas no painel direito.
 elements.steps.forEach((li, index) => {
-    li.querySelector("button").addEventListener(
+    const button = li.querySelector("button");
+
+    button.addEventListener(
         "click",
         () => goTo(index)
     );
 });
 
-// Mudança de variante.
+// Alteração da variante.
 elements.variant.addEventListener(
     "change",
     () => changeVariant(elements.variant.value)
 );
 
-// =============================================
+// ==========================================
 // 19. INICIALIZAÇÃO
-// =============================================
+// ==========================================
 
-changeVariant("1");
+changeVariant(elements.variant.value);

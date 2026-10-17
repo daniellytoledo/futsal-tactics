@@ -243,6 +243,14 @@
                         marker-end="url(#white-arrow)"
                     />
 
+                    <!-- Movimentação do marcador do jogador 2 -->
+                    <path
+                        id="moveDefender2"
+                        class="movement"
+                        d="M688 318 L688 68"
+                        marker-end="url(#white-arrow)"
+                    />
+
                     <!-- 2: Jogador 2 aproxima-se do lateral -->
                     <path
                         id="move2Slow"
@@ -312,7 +320,8 @@
                     <!-- Restantes adversários -->
                     <circle cx="690" cy="180" r="20"/>
 
-                    <circle cx="688" cy="318" r="20"/>
+                    <!-- Adversário responsável por marcar o jogador 2 -->
+                    <circle id="defender2" cx="688" cy="318" r="20" />
 
                     <circle cx="692" cy="445" r="20"/>
 
@@ -462,7 +471,7 @@
                     </option>
 
                     <option value="2">
-                        Variante 2 — por definir
+                        Variante 2 — Passe para o jogador 3
                     </option>
 
                     <option value="3">
