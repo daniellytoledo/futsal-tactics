@@ -21,6 +21,9 @@ const P = {
     p3Start: { x: 720, y: 330 },
     p3Finish: { x: 720, y: 492 },
 
+    p4Start: { x: 720, y: 210 },
+    p4Finish: { x: 935, y: 275 },
+
     ballStart: { x: 958, y: 659 },
     ballFinish: { x: 720, y: 492 },
 
@@ -59,6 +62,8 @@ const elements = {
     play: document.querySelector("#play"),
     status: document.querySelector("#status"),
     speed: document.querySelector("#speed"),
+
+    p4: document.querySelector("#player4"),
 
     steps: [...document.querySelectorAll("#steps li")]
 };
@@ -123,6 +128,28 @@ function render() {
     }
 
     place(elements.p3, position3);
+
+    // Jogador 4 corre entre os dois defesas
+    // até ao segundo poste.
+    //
+    // A corrida acontece ao mesmo tempo
+    // que a descida do jogador 3.
+
+let position4;
+
+if (currentStep < 1) {
+    position4 = P.p4Start;
+} else if (currentStep === 1) {
+    position4 = between(
+        P.p4Start,
+        P.p4Finish,
+        t
+    );
+} else {
+    position4 = P.p4Finish;
+}
+
+place(elements.p4, position4);
 
     // Movimento da bola: canto, passe e remate
     let ballPosition;
