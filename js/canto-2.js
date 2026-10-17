@@ -40,27 +40,27 @@ const P = {
 const stages = [
     {
         title: "Passe do jogador 1 para o 2",
-        duration: 1250
+        duration: 2500
     },
     {
         title: "Passe do jogador 2 para o 3",
-        duration: 1200
+        duration: 2000
     },
     {
         title: "Passe do jogador 3 para o 4",
-        duration: 1100
+        duration: 2000
     },
     {
         title: "Movimento do jogador 1",
-        duration: 1200
+        duration: 2000
     },
     {
         title: "Passe do jogador 4 para o 1",
-        duration: 1100
+        duration: 2000
     },
     {
         title: "Remate do jogador 1",
-        duration: 800
+        duration: 1200
     }
 ];
 
