@@ -30,8 +30,14 @@ const P = {
     p3: { x: 731, y: 320 },
 
     // Jogador 4: liberta a zona do penálti
+    // Jogador 4
     p4Start: { x: 815, y: 320 },
+
+    // Posição após levar o defensor ao canto
     p4Finish: { x: 945, y: 60 },
+
+    // Posição de apoio no primeiro poste
+    p4FirstPost: { x: 945, y: 270 },
 
     // Defesa que acompanha o jogador 4
     defenderStart: { x: 868, y: 320 },
@@ -173,7 +179,11 @@ const p2RunningPath = [
 // 6. POSIÇÃO DO JOGADOR 4
 // ==========================================
 
+
 function getPlayer4Position(t) {
+
+    // ETAPA 1:
+    // Jogador 4 leva o seu marcador para o canto.
     if (currentStep === 0) {
         return between(
             P.p4Start,
@@ -182,8 +192,46 @@ function getPlayer4Position(t) {
         );
     }
 
-    return P.p4Finish;
+    // ETAPA 2:
+    // Aguarda no canto enquanto o jogador 2
+    // faz a finta e começa a correr.
+    if (currentStep === 1) {
+        return P.p4Finish;
+    }
+
+    // ETAPA 3:
+    // Quando o jogador 2 está perto de receber
+    // a bola, o jogador 4 começa a deslocar-se
+    // em direção ao primeiro poste.
+    if (currentStep === 2) {
+
+        // Aguarda até aos 65% da etapa.
+        if (t < 0.65) {
+            return P.p4Finish;
+        }
+
+        // Percorre 40% do caminho até ao poste.
+        const progress =
+            ((t - 0.65) / 0.35) * 0.40;
+
+        return between(
+            P.p4Finish,
+            P.p4FirstPost,
+            progress
+        );
+    }
+
+    // ETAPA 4:
+    // Enquanto o jogador 2 remata,
+    // o jogador 4 completa o movimento
+    // até ao primeiro poste.
+    return between(
+        P.p4Finish,
+        P.p4FirstPost,
+        0.40 + t * 0.60
+    );
 }
+
 
 // ==========================================
 // 7. POSIÇÃO DO DEFESA DO JOGADOR 4
@@ -300,6 +348,7 @@ function getBallPosition(t) {
 
 const guidePaths = {
     move4: document.querySelector("#move4"),
+    move4Post: document.querySelector("#move4Post"),
     defender: document.querySelector("#moveDefender"),
     fake: document.querySelector("#move2Fake"),
     run: document.querySelector("#move2Run"),
@@ -351,6 +400,17 @@ function renderGuides() {
     // Número da etapa.
     if (guideNumbers[currentStep]) {
         guideNumbers[currentStep].style.opacity = "1";
+    }
+
+    // Movimento do jogador 4 para o primeiro poste.
+    // A seta aparece durante o fim do passe
+    // e durante o remate.
+
+    if (
+        (currentStep === 2 && progress >= 0.65) ||
+        currentStep === 3
+    ) {
+        guidePaths.move4Post.style.opacity = "1";
     }
 }
 
