@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canto 1 | Playbook</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/canto-1.css">
+  <script src="../js/canto-1.js" defer></script>
+</head>
+<body class="tactic-page">
+  <header class="tactic-header">
+    <a href="../index.html" class="back-link">← Voltar ao início</a>
+    <div><h1>CANTO 1</h1><p>Bola parada ofensiva · Canto</p></div>
+    <span class="offense-pill">● Ofensivo</span>
+  </header>
+
+  <main class="tactic-layout">
+    <section class="pitch-panel" aria-label="Quadro tático animado">
+      <svg id="pitch" viewBox="0 0 1000 700" role="img" aria-label="Campo de futsal com a baliza à direita, quatro atacantes azuis, quatro defesas vermelhos e guarda-redes rosa">
+        <defs>
+          <pattern id="grass" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M0 0H24V24H0Z" fill="#117a47"/><path d="M0 12H24" stroke="#fff" stroke-opacity=".025"/></pattern>
+          <marker id="white-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0L6 3L0 6" fill="none" stroke="#f5f8f1" stroke-width="1.7"/></marker>
+          <marker id="green-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0L6 3L0 6" fill="none" stroke="#b9f36b" stroke-width="1.7"/></marker>
+        </defs>
+        <rect width="1000" height="700" fill="url(#grass)"/>
+        <g class="pitch-lines" fill="none" stroke="#edf9ed" stroke-width="3.2">
+          <rect x="5" y="5" width="990" height="690"/>
+          <path d="M500 5V695"/><circle cx="500" cy="350" r="76"/><circle cx="500" cy="350" r="3" fill="#edf9ed"/>
+          <path d="M5 120 A235 235 0 0 1 5 580 M995 120 A235 235 0 0 0 995 580"/>
+          <path d="M995 265H958V435H995"/><path d="M995 5A34 34 0 0 0 961 39 M995 695A34 34 0 0 1 961 661"/>
+          <path d="M5 265H42V435H5"/>
+        </g>
+        <g class="goal"><rect x="979" y="280" width="18" height="140" fill="#e8f4e8" fill-opacity=".13" stroke="white" stroke-width="3"/><path d="M985 281V420 M991 281V420 M979 295H997 M979 311H997 M979 327H997 M979 343H997 M979 359H997 M979 375H997 M979 391H997 M979 407H997" stroke="#fff" stroke-opacity=".32"/></g>
+
+        <!-- Movimentos: uma única ponta por seta; ordem 1, 2, 3, 4. -->
+        <g id="guides" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path id="move2" d="M733 622 L864 514" class="movement" marker-end="url(#white-arrow)"/>
+          <path id="move3" d="M720 330 L720 492" class="movement" marker-end="url(#white-arrow)"/>
+          <path id="pass-guide" d="M980 677 L720 492" class="ball-path" marker-end="url(#green-arrow)"/>
+          <path id="shot-guide" d="M720 492 L972 345" class="ball-path" marker-end="url(#green-arrow)"/>
+          <g class="guide-number"><circle cx="780" cy="578" r="16"/><text x="780" y="583">1</text></g>
+          <g class="guide-number"><circle cx="696" cy="412" r="16"/><text x="696" y="417">2</text></g>
+          <g class="guide-number"><circle cx="846" cy="604" r="16"/><text x="846" y="609">3</text></g>
+          <g class="guide-number"><circle cx="868" cy="410" r="16"/><text x="868" y="415">4</text></g>
+        </g>
+
+        <!-- Quatro defesas, incluindo os adversários diretos dos jogadores 3 e 4. -->
+        <g class="defenders">
+          <circle cx="818" cy="210" r="20"/><circle cx="818" cy="330" r="20"/>
+          <circle cx="864" cy="514" r="20"/><circle cx="922" cy="514" r="20"/>
+        </g>
+        <g id="keeper" transform="translate(961 350)"><circle r="22" fill="#e81286" stroke="#fff" stroke-width="3"/><text y="6">GR</text></g>
+
+        <g id="player4" class="player" transform="translate(720 210)"><circle r="21"/><text y="7">4</text></g>
+        <g id="player3" class="player" transform="translate(720 330)"><circle r="21"/><text y="7">3</text></g>
+        <g id="player2" class="player" transform="translate(733 622)"><circle r="21"/><text y="7">2</text></g>
+        <g id="player1" class="player" transform="translate(980 677)"><circle r="21"/><text y="7">1</text></g>
+        <g id="ball" transform="translate(958 659)"><circle r="11" fill="#fff" stroke="#15221b" stroke-width="2"/><path d="M0-5L5-2L3 4L-3 4L-5-2Z" fill="#15221b"/></g>
+      </svg>
+      <div class="playback-controls">
+        <button type="button" id="restart">↺ Reiniciar</button>
+        <button type="button" id="previous" aria-label="Etapa anterior">⏮</button>
+        <button type="button" id="play" class="play-main">▶ Reproduzir</button>
+        <button type="button" id="next" aria-label="Próxima etapa">⏭</button>
+        <label>Velocidade <select id="speed"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="1.5">1,5×</option></select></label>
+      </div>
+      <p class="pitch-caption">Setas tracejadas: deslocação dos jogadores · Setas verdes: trajetória da bola.</p>
+    </section>
+
+    <aside class="instructions">
+      <p class="aside-eyebrow">SEQUÊNCIA DA JOGADA</p>
+      <ol class="steps" id="steps">
+        <li data-step="0"><button type="button"><strong>01 · Bloqueio do jogador 2</strong><span>O jogador 2 sai da posição inicial e bloqueia o adversário vermelho mais próximo da área, junto à outra defesa.</span></button></li>
+        <li data-step="1"><button type="button"><strong>02 · Descida do jogador 3</strong><span>O jogador 3 desce em linha reta até ao espaço livre indicado, sem se colocar literalmente atrás do jogador 2.</span></button></li>
+        <li data-step="2"><button type="button"><strong>03 · Passe do canto</strong><span>Enquanto o jogador 3 chega ao espaço livre, o jogador 1 passa a bola pelas costas do bloqueio, afastada das duass defesas.</span></button></li>
+        <li data-step="3"><button type="button"><strong>04 · Remate direto</strong><span>O jogador 3 remata de primeira para a baliza.</span></button></li>
+      </ol>
+      <div class="attention"><strong>Pontos de atenção</strong><p>O jogador 2 mantém o bloqueio. O jogador 4 pode acompanhar e tentar bloquear o adversário, caso ele se movimente, para que ele não acompanhe o jogador 3 até o remate.</p></div>
+      <p id="status" class="status" aria-live="polite">Pronto para iniciar.</p>
+    </aside>
+  </main>
+</body>
+</html>

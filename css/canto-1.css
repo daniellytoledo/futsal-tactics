@@ -1,0 +1,311 @@
+/* Canto 1 — quadro tático, animações e layout responsivo */
+
+.tactic-page {
+    background: #101612;
+    color: #f1f5ef;
+}
+
+.tactic-header {
+    max-width: 1480px;
+    margin: auto;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border-bottom: 1px solid #ffffff18;
+}
+
+.tactic-header>div {
+    text-align: center;
+}
+
+.tactic-header h1 {
+    font-size: clamp(24px,4vw,36px);
+    margin: 0;
+    letter-spacing: -.05em;
+}
+
+.tactic-header p {
+    margin: 5px 0 0;
+    color: #aab6aa;
+    font-size: 13px;
+}
+
+.back-link {
+    font-size: 13px;
+    color: #cbd5ca;
+}
+
+.offense-pill {
+    border: 1px solid #b9f36b;
+    border-radius: 24px;
+    padding: 9px 14px;
+    color: #b9f36b;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.tactic-layout {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 26px 28px;
+    display: grid;
+    grid-template-columns: minmax(0,1.8fr) minmax(300px,1fr);
+    gap: 24px;
+}
+
+.pitch-panel {
+    min-width: 0;
+}
+
+#pitch {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 13px;
+    border: 1px solid #ffffff2a;
+    box-shadow: 0 20px 60px #0003;
+}
+
+.pitch-lines {
+    opacity: .95;
+}
+
+.movement {
+    stroke: #f5f8f1;
+    stroke-width: 4;
+    stroke-dasharray: 11 10;
+}
+
+.ball-path {
+    stroke: #b9f36b;
+    stroke-width: 5;
+}
+
+.guide-number circle {
+    fill: #111a14;
+    stroke: #fff;
+    stroke-width: 2;
+}
+
+.guide-number text {
+    font: 700 17px sans-serif;
+    fill: #fff;
+    text-anchor: middle;
+    stroke: none;
+}
+
+.defenders circle {
+    fill: #f02820;
+    stroke: #fff;
+    stroke-width: 3;
+}
+
+.player circle {
+    fill: #0875bf;
+    stroke: #fff;
+    stroke-width: 3;
+}
+
+.player text,#keeper text {
+    fill: white;
+    text-anchor: middle;
+    font: 700 21px sans-serif;
+}
+
+.player,#ball {
+    filter: drop-shadow(0 3px 3px #0005);
+}
+
+.playback-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 21px 0 8px;
+}
+
+.playback-controls button,.playback-controls select {
+    border: 1px solid #ffffff28;
+    background: #1b251e;
+    color: #f1f5ef;
+    border-radius: 25px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font: 600 13px inherit;
+}
+
+.playback-controls button:hover,.playback-controls button:focus-visible {
+    border-color: #b9f36b;
+}
+
+.playback-controls .play-main {
+    background: #b9f36b;
+    color: #101612;
+    font-weight: 700;
+    border-color: #b9f36b;
+    min-width: 120px;
+}
+
+.playback-controls label {
+    color: #aab6aa;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.playback-controls select {
+    padding: 9px;
+}
+
+.pitch-caption {
+    text-align: center;
+    color: #9aaa9c;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.instructions {
+    border: 1px solid #ffffff1d;
+    background: #171f19;
+    border-radius: 13px;
+    padding: 25px 22px;
+    align-self: start;
+}
+
+.aside-eyebrow {
+    font-size: 11px;
+    color: #b9f36b;
+    letter-spacing: .15em;
+    font-weight: 700;
+    margin: 0 0 17px;
+}
+
+.steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.steps li {
+    border-top: 1px solid #ffffff16;
+}
+
+.steps li button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-left: 3px solid transparent;
+    padding: 18px 12px;
+    color: inherit;
+    cursor: pointer;
+}
+
+.steps li.active button {
+    border-left-color: #b9f36b;
+    background: #b9f36b12;
+}
+
+.steps strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.steps span {
+    display: block;
+    color: #aab6aa;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.attention {
+    margin-top: 19px;
+    padding: 16px;
+    border: 1px solid #b9f36b33;
+    border-radius: 9px;
+}
+
+.attention strong {
+    font-size: 13px;
+    color: #b9f36b;
+}
+
+.attention p,.status {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #aab6aa;
+}
+
+.attention p {
+    margin: 7px 0 0;
+}
+
+.status {
+    margin: 15px 0 0;
+}
+
+#guides {
+    opacity: .85;
+}
+
+#guides .guide-number {
+    opacity: 0;
+    transition: opacity .15s;
+}
+
+#guides .movement,#guides .ball-path {
+    opacity: 0;
+    transition: opacity .15s;
+}
+
+#guides.show-0 #move2,#guides.show-0 .guide-number:nth-of-type(1),#guides.show-1 #move3,#guides.show-1 .guide-number:nth-of-type(2),#guides.show-2 #pass-guide,#guides.show-2 .guide-number:nth-of-type(3),#guides.show-3 #shot-guide,#guides.show-3 .guide-number:nth-of-type(4) {
+    opacity: 1;
+}
+
+@media(max-width:950px) {
+    .tactic-layout {
+        grid-template-columns: 1fr;
+    }
+    .instructions {
+        max-width: none;
+    }
+}
+
+@media(max-width:560px) {
+    .tactic-header {
+        padding: 16px;
+        flex-wrap: wrap;
+    }
+    .tactic-header>div {
+        order: -1;
+        width: 100%;
+    }
+    .tactic-layout {
+        padding: 14px;
+        gap: 14px;
+    }
+    .instructions {
+        padding: 16px;
+    }
+    .playback-controls {
+        gap: 6px;
+    }
+    .playback-controls button {
+        padding: 9px 12px;
+    }
+    .offense-pill {
+        padding: 6px 10px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    #guides * {
+        transition: none!important;
+    }
+}
