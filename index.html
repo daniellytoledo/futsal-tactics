@@ -1,94 +1,98 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-PT">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10251d">
-  <meta name="description" content="Biblioteca visual de jogadas táticas de futsal.">
-  <title>Futsal Tactics — Quadro tático</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101612">
+  <meta name="description" content="Manual tático da equipa — consulta e estuda as jogadas de futsal.">
+  <title>Marítmo Olhanense — Futsal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#inicio" aria-label="Futsal Tactics início"><span class="brand-mark">FT</span><span>Futsal <strong>Tactics</strong></span></a>
-    <span class="topbar-note">QUADRO TÁTICO DIGITAL</span>
-  </header>
-
-  <main class="app-shell" id="inicio">
-    <section class="intro">
-      <div>
-        <p class="eyebrow">CENTRO DE TREINO · EQUIPA</p>
-        <h1>As jogadas da <span>equipa.</span></h1>
-        <p class="intro-copy">Visualiza os movimentos, acompanha cada etapa e percebe a função de cada jogador.</p>
-      </div>
-      <div class="session-pill"><span class="live-dot"></span> Biblioteca de jogadas</div>
-    </section>
-
-    <section class="workspace" aria-label="Biblioteca e visualização tática">
-      <aside class="library panel">
-        <div class="panel-heading"><div><p class="eyebrow">PLANO DE JOGO</p><h2>Biblioteca</h2></div><span id="tactic-count" class="count-pill">03</span></div>
-        <label class="search-box"><span aria-hidden="true">⌕</span><input id="search-tactics" type="search" placeholder="Pesquisar jogadas…" aria-label="Pesquisar jogadas"></label>
-        <div class="category-row" id="category-filters" aria-label="Filtrar por categoria">
-          <button class="category active" data-category="Todas">Todas</button>
-          <button class="category" data-category="Ataque">Ataque</button>
-          <button class="category" data-category="Bolas paradas">Bolas paradas</button>
-        </div>
-        <div class="tactic-list" id="tactic-list"></div>
-        <p class="library-hint">Seleciona uma jogada para abrir o quadro tático.</p>
-      </aside>
-
-      <section class="viewer panel" aria-label="Visualizador da jogada">
-        <div class="viewer-header">
-          <div><p class="eyebrow" id="tactic-category">ATAQUE ORGANIZADO</p><h2 id="tactic-title">Rotação na ala</h2></div>
-          <span class="step-pill" id="step-pill">ETAPA 1 / 4</span>
-        </div>
-        <div class="pitch-wrap">
-          <div class="pitch-label pitch-label-top">ATAQUE</div>
-          <svg id="pitch" class="pitch" viewBox="0 0 640 400" role="img" aria-label="Campo de futsal com posições e movimentos dos jogadores">
-            <defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#d9f36a"/></marker></defs>
-            <rect x="8" y="8" width="624" height="384" rx="8" class="pitch-surface"/>
-            <g class="pitch-lines">
-              <rect x="28" y="28" width="584" height="344" rx="3"/>
-              <line x1="320" y1="28" x2="320" y2="372"/>
-              <circle cx="320" cy="200" r="53"/><circle cx="320" cy="200" r="3" class="center-dot"/>
-              <rect x="28" y="124" width="94" height="152" rx="2"/><rect x="518" y="124" width="94" height="152" rx="2"/>
-              <path d="M28 160 Q75 160 75 200 Q75 240 28 240"/><path d="M612 160 Q565 160 565 200 Q565 240 612 240"/>
-              <circle cx="87" cy="200" r="3" class="center-dot"/><circle cx="553" cy="200" r="3" class="center-dot"/>
-              <rect x="5" y="174" width="4" height="52" class="goal"/><rect x="631" y="174" width="4" height="52" class="goal"/>
-            </g>
-            <g id="motion-layer"></g>
-            <g id="ball-layer"></g>
-            <g id="player-layer"></g>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Playbook, página inicial">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="2" width="28" height="28" rx="8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 21.5L13.3 10.5L18.2 20L24 10.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <div class="pitch-label pitch-label-bottom">CONSTRUÇÃO</div>
-        </div>
-        <div class="playback">
-          <div class="playback-buttons">
-            <button class="icon-button" id="restart-btn" title="Reiniciar" aria-label="Reiniciar">↺</button>
-            <button class="primary-button" id="play-btn"><span id="play-icon">▶</span><span id="play-label">Reproduzir</span></button>
-            <button class="icon-button" id="prev-btn" title="Etapa anterior" aria-label="Etapa anterior">‹</button>
-            <button class="icon-button" id="next-btn" title="Próxima etapa" aria-label="Próxima etapa">›</button>
-          </div>
-          <label class="speed-control">Velocidade <select id="speed-select" aria-label="Velocidade da animação"><option value="1">1×</option><option value="0.7">0,7×</option><option value="1.5">1,5×</option></select></label>
-        </div>
-        <div class="progress-track" aria-label="Progresso da jogada"><div id="progress-bar"></div></div>
-        <div class="step-navigation" id="step-navigation"></div>
+        </span>
+        <span>MARÍTMO OLHANENSE<span class="brand-dot">.</span></span>
+      </a>
+      <span class="topbar-label"><span class="status-dot"></span> MANUAL TÁTICO DA EQUIPA</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">TREINAR. COMPREENDER. EXECUTAR.</p>
+        <h1 id="page-title">Cada movimento<br>faz a <span class="accent">diferença.</span></h1>
+        <p class="intro-copy">As nossas jogadas, organizadas num só lugar.<br>Escolhe uma sequência e revê os movimentos.</p>
       </section>
 
-      <aside class="details panel">
-        <div class="panel-heading"><div><p class="eyebrow">LEITURA DA JOGADA</p><h2>Instruções</h2></div><span class="instruction-icon">↗</span></div>
-        <div class="step-summary"><span class="step-number" id="step-number">01</span><div><p class="eyebrow">MOMENTO ATUAL</p><h3 id="step-title">Abrir a ala</h3></div></div>
-        <p id="step-description" class="step-description">O jogador 2 abre junto à linha lateral para criar uma linha de passe segura.</p>
-        <div class="divider"></div>
-        <div class="players-heading"><h3>Funções dos jogadores</h3><span class="muted">Seleciona para destacar</span></div>
-        <div id="player-roles" class="player-roles"></div>
-        <div class="coach-note"><span class="coach-note-icon">✳</span><div><strong>Nota do treinador</strong><p id="coach-note">Manter a largura e dar sempre duas linhas de passe ao portador da bola.</p></div></div>
-      </aside>
-    </section>
-    <footer><span>FUTSAL TACTICS</span><span>Feito para estudar. Pronto para o pavilhão.</span></footer>
-  </main>
-  <script src="js/tactics.js"></script>
-  <script src="js/animation.js"></script>
-  <script src="js/app.js"></script>
+      <section class="plays-section" aria-labelledby="plays-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">BIBLIOTECA</p>
+            <h2 id="plays-title">Jogadas da equipa</h2>
+          </div>
+          <span class="play-count"><span id="play-count">04</span> JOGADAS</span>
+        </div>
+
+        <div class="play-list">
+          <a class="play-card" href="jogadas/canto-1.html">
+            <span class="play-number">01</span>
+            <span class="play-info">
+              <span class="play-name">Canto 1</span>
+              <span class="play-description">Bola parada · Ofensiva</span>
+            </span>
+            <span class="play-tag attack">ATAQUE</span>
+            <span class="play-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <a class="play-card" href="jogadas/canto-2.html">
+            <span class="play-number">02</span>
+            <span class="play-info">
+              <span class="play-name">Canto 2</span>
+              <span class="play-description">Bola parada · Ofensiva</span>
+            </span>
+            <span class="play-tag attack">ATAQUE</span>
+            <span class="play-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <a class="play-card" href="jogadas/linha.html">
+            <span class="play-number">03</span>
+            <span class="play-info">
+              <span class="play-name">Linha</span>
+              <span class="play-description">Reposição lateral · Ofensiva</span>
+            </span>
+            <span class="play-tag attack">ATAQUE</span>
+            <span class="play-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <a class="play-card" href="jogadas/cabo-verde.html">
+            <span class="play-number">04</span>
+            <span class="play-info">
+              <span class="play-name">Cabo Verde</span>
+              <span class="play-description">Reposição lateral · Defensiva</span>
+            </span>
+            <span class="play-tag defense">DEFESA</span>
+            <span class="play-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <p class="future-note"><span aria-hidden="true">＋</span> Novas jogadas podem ser adicionadas a esta biblioteca.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>PLAYBOOK<span class="brand-dot">.</span></span>
+      <span>FUTSAL FEMININO · SÊNIOR</span>
+    </footer>
+  </div>
 </body>
 </html>
