@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="pt-PT">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,136 +34,60 @@
         <!-- QUADRO TÁTICO -->
         <section class="pitch-panel" aria-label="Quadro tático animado">
 
-            <svg
-                id="pitch"
-                viewBox="0 0 1000 700"
-                role="img"
-                aria-label="Jogada Canto 2, com quatro jogadores azuis, quatro adversários vermelhos e guarda-redes rosa"
-            >
+            <svg id="pitch" viewBox="0 0 1000 700" role="img"
+                aria-label="Jogada Canto 2, com quatro jogadores azuis, quatro adversários vermelhos e guarda-redes rosa">
 
                 <defs>
                     <!-- Relva igual à do Canto 1 -->
-                    <pattern
-                        id="grass"
-                        width="24"
-                        height="24"
-                        patternUnits="userSpaceOnUse"
-                    >
-                        <path
-                            d="M0 0H24V24H0Z"
-                            fill="#117a47"
-                        />
+                    <pattern id="grass" width="24" height="24" patternUnits="userSpaceOnUse">
+                        <path d="M0 0H24V24H0Z" fill="#117a47" />
 
-                        <path
-                            d="M0 12H24"
-                            stroke="#fff"
-                            stroke-opacity=".025"
-                        />
+                        <path d="M0 12H24" stroke="#fff" stroke-opacity=".025" />
                     </pattern>
 
                     <!-- Seta branca: deslocação -->
-                    <marker
-                        id="white-arrow"
-                        markerWidth="8"
-                        markerHeight="8"
-                        refX="6"
-                        refY="3"
-                        orient="auto"
-                        markerUnits="strokeWidth"
-                    >
-                        <path
-                            d="M0 0L6 3L0 6"
-                            fill="none"
-                            stroke="#f5f8f1"
-                            stroke-width="1.7"
-                        />
+                    <marker id="white-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"
+                        markerUnits="strokeWidth">
+                        <path d="M0 0L6 3L0 6" fill="none" stroke="#f5f8f1" stroke-width="1.7" />
                     </marker>
 
                     <!-- Seta verde: passe ou remate -->
-                    <marker
-                        id="green-arrow"
-                        markerWidth="8"
-                        markerHeight="8"
-                        refX="6"
-                        refY="3"
-                        orient="auto"
-                        markerUnits="strokeWidth"
-                    >
-                        <path
-                            d="M0 0L6 3L0 6"
-                            fill="none"
-                            stroke="#b9f36b"
-                            stroke-width="1.7"
-                        />
+                    <marker id="green-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"
+                        markerUnits="strokeWidth">
+                        <path d="M0 0L6 3L0 6" fill="none" stroke="#b9f36b" stroke-width="1.7" />
                     </marker>
                 </defs>
 
                 <!-- FUNDO DO CAMPO -->
-                <rect
-                    width="1000"
-                    height="700"
-                    fill="url(#grass)"
-                />
+                <rect width="1000" height="700" fill="url(#grass)" />
 
                 <!-- LINHAS DO CAMPO -->
-                <g
-                    class="pitch-lines"
-                    fill="none"
-                    stroke="#edf9ed"
-                    stroke-width="3.2"
-                >
-                    <rect
-                        x="5"
-                        y="5"
-                        width="990"
-                        height="690"
-                    />
+                <g class="pitch-lines" fill="none" stroke="#edf9ed" stroke-width="3.2">
+                    <rect x="5" y="5" width="990" height="690" />
 
                     <path d="M500 5V695" />
 
-                    <circle
-                        cx="500"
-                        cy="350"
-                        r="76"
-                    />
+                    <circle cx="500" cy="350" r="76" />
 
-                    <circle
-                        cx="500"
-                        cy="350"
-                        r="3"
-                        fill="#edf9ed"
-                    />
+                    <circle cx="500" cy="350" r="3" fill="#edf9ed" />
 
-                    <path
-                        d="M5 120 A235 235 0 0 1 5 580
-                           M995 120 A235 235 0 0 0 995 580"
-                    />
+                    <path d="M5 120 A235 235 0 0 1 5 580
+                           M995 120 A235 235 0 0 0 995 580" />
 
                     <path d="M995 265H958V435H995" />
 
-                    <path
-                        d="M995 5A34 34 0 0 0 961 39
-                           M995 695A34 34 0 0 1 961 661"
-                    />
+                    <path d="M995 5A34 34 0 0 0 961 39
+                           M995 695A34 34 0 0 1 961 661" />
 
                     <path d="M5 265H42V435H5" />
                 </g>
 
                 <!-- BALIZA: IGUAL À DO CANTO 1 -->
                 <g class="goal">
-                    <rect
-                        x="979"
-                        y="280"
-                        width="18"
-                        height="140"
-                        fill="#e8f4e8"
-                        fill-opacity=".13"
-                        stroke="white"
-                        stroke-width="3"
-                    />
+                    <rect x="979" y="280" width="18" height="140" fill="#e8f4e8" fill-opacity=".13" stroke="white"
+                        stroke-width="3" />
 
-                    <path
-                        d="M985 281V420
+                    <path d="M985 281V420
                            M991 281V420
                            M979 295H997
                            M979 311H997
@@ -172,10 +96,7 @@
                            M979 359H997
                            M979 375H997
                            M979 391H997
-                           M979 407H997"
-                        stroke="#fff"
-                        stroke-opacity=".32"
-                    />
+                           M979 407H997" stroke="#fff" stroke-opacity=".32" />
                 </g>
 
                 <!--
@@ -188,96 +109,56 @@
                     5 - Passe 4 → 1
                     6 - Remate do 1
                 -->
-                <g
-                    id="guides"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                <g id="guides" fill="none" stroke-linecap="round" stroke-linejoin="round">
 
                     <!-- Etapa 1 -->
-                    <path
-                        id="pass1"
-                        class="ball-path"
-                        d="M980 677 L635 677"
-                        marker-end="url(#green-arrow)"
-                    />
+                    <path id="pass1" class="ball-path" d="M980 677 L635 677" marker-end="url(#green-arrow)" />
 
-                    <path
-                        id="move1"
-                        class="movement"
-                        d="M980 677 L820 85"
-                        marker-end="url(#white-arrow)"
-                    />
+                    <path id="move1" class="movement" d="M980 677 L820 85" marker-end="url(#white-arrow)" />
 
                     <!-- Etapa 2 -->
-                    <path
-                        id="pass2"
-                        class="ball-path"
-                        d="M635 677 L635 70"
-                        marker-end="url(#green-arrow)"
-                    />
+                    <path id="pass2" class="ball-path" d="M635 677 L635 70" marker-end="url(#green-arrow)" />
 
                     <!-- Etapa 3 -->
-                    <path
-                        id="pass3"
-                        class="ball-path"
-                        d="M635 70 L920 70"
-                        marker-end="url(#green-arrow)"
-                    />
+                    <path id="pass3" class="ball-path" d="M635 70 L920 70" marker-end="url(#green-arrow)" />
 
                     <!-- Etapa 4 -->
-                    <path
-                        id="move4"
-                        class="movement"
-                        d="M820 85 L840 240"
-                        marker-end="url(#white-arrow)"
-                    />
+                    <path id="move4" class="movement" d="M820 85 L840 240" marker-end="url(#white-arrow)" />
 
                     <!-- Etapa 5 -->
-                    <path
-                        id="pass5"
-                        class="ball-path"
-                        d="M920 70 L840 240"
-                        marker-end="url(#green-arrow)"
-                    />
+                    <path id="pass5" class="ball-path" d="M920 70 L840 240" marker-end="url(#green-arrow)" />
 
                     <!-- Etapa 6 -->
-                    <path
-                        id="pass6"
-                        class="ball-path"
-                        d="M840 240 L979 350"
-                        marker-end="url(#green-arrow)"
-                    />
+                    <path id="pass6" class="ball-path" d="M840 240 L979 350" marker-end="url(#green-arrow)" />
 
                     <!-- Numeração das setas -->
                     <g class="guide-number">
-                        <circle cx="746" cy="655" r="16"/>
+                        <circle cx="746" cy="655" r="16" />
                         <text x="746" y="660">1</text>
                     </g>
 
                     <g class="guide-number">
-                        <circle cx="610" cy="386" r="16"/>
+                        <circle cx="610" cy="386" r="16" />
                         <text x="610" y="391">2</text>
                     </g>
 
                     <g class="guide-number">
-                        <circle cx="750" cy="46" r="16"/>
+                        <circle cx="750" cy="46" r="16" />
                         <text x="750" y="51">3</text>
                     </g>
 
                     <g class="guide-number">
-                        <circle cx="865" cy="159" r="16"/>
+                        <circle cx="865" cy="159" r="16" />
                         <text x="865" y="164">4</text>
                     </g>
 
                     <g class="guide-number">
-                        <circle cx="904" cy="157" r="16"/>
+                        <circle cx="904" cy="157" r="16" />
                         <text x="904" y="162">5</text>
                     </g>
 
                     <g class="guide-number">
-                        <circle cx="936" cy="274" r="16"/>
+                        <circle cx="936" cy="274" r="16" />
                         <text x="936" y="279">6</text>
                     </g>
                 </g>
@@ -292,84 +173,49 @@
                     próximos da área.
                 -->
                 <g class="defenders">
-                    <circle cx="780" cy="305" r="20"/>
-                    <circle cx="910" cy="275" r="20"/>
+                    <circle cx="780" cy="305" r="20" />
+                    <circle cx="910" cy="275" r="20" />
 
-                    <circle cx="795" cy="520" r="20"/>
-                    <circle cx="925" cy="530" r="20"/>
+                    <circle cx="795" cy="520" r="20" />
+                    <circle cx="925" cy="530" r="20" />
                 </g>
 
                 <!-- GUARDA-REDES: EXATAMENTE O MESMO -->
-                <g
-                    id="keeper"
-                    transform="translate(961 350)"
-                >
-                    <circle
-                        r="22"
-                        fill="#e81286"
-                        stroke="#fff"
-                        stroke-width="3"
-                    />
+                <g id="keeper" transform="translate(961 350)">
+                    <circle r="22" fill="#e81286" stroke="#fff" stroke-width="3" />
 
                     <text y="6">GR</text>
                 </g>
 
                 <!-- JOGADOR 4 -->
-                <g
-                    id="player4"
-                    class="player"
-                    transform="translate(920 70)"
-                >
-                    <circle r="21"/>
+                <g id="player4" class="player" transform="translate(920 70)">
+                    <circle r="21" />
                     <text y="7">4</text>
                 </g>
 
                 <!-- JOGADOR 3 -->
-                <g
-                    id="player3"
-                    class="player"
-                    transform="translate(635 70)"
-                >
-                    <circle r="21"/>
+                <g id="player3" class="player" transform="translate(635 70)">
+                    <circle r="21" />
                     <text y="7">3</text>
                 </g>
 
                 <!-- JOGADOR 2 -->
-                <g
-                    id="player2"
-                    class="player"
-                    transform="translate(635 660)"
-                >
-                    <circle r="21"/>
+                <g id="player2" class="player" transform="translate(635 660)">
+                    <circle r="21" />
                     <text y="7">2</text>
                 </g>
 
                 <!-- JOGADOR 1: COBRADOR DO CANTO -->
-                <g
-                    id="player1"
-                    class="player"
-                    transform="translate(980 677)"
-                >
-                    <circle r="21"/>
+                <g id="player1" class="player" transform="translate(980 677)">
+                    <circle r="21" />
                     <text y="7">1</text>
                 </g>
 
                 <!-- BOLA: MESMO DESENHO DO CANTO 1 -->
-                <g
-                    id="ball"
-                    transform="translate(958 659)"
-                >
-                    <circle
-                        r="11"
-                        fill="#fff"
-                        stroke="#15221b"
-                        stroke-width="2"
-                    />
+                <g id="ball" transform="translate(958 659)">
+                    <circle r="11" fill="#fff" stroke="#15221b" stroke-width="2" />
 
-                    <path
-                        d="M0-5L5-2L3 4L-3 4L-5-2Z"
-                        fill="#15221b"
-                    />
+                    <path d="M0-5L5-2L3 4L-3 4L-5-2Z" fill="#15221b" />
                 </g>
             </svg>
 
@@ -380,27 +226,15 @@
                     ↺ Reiniciar
                 </button>
 
-                <button
-                    type="button"
-                    id="previous"
-                    aria-label="Etapa anterior"
-                >
+                <button type="button" id="previous" aria-label="Etapa anterior">
                     ⏮
                 </button>
 
-                <button
-                    type="button"
-                    id="play"
-                    class="play-main"
-                >
+                <button type="button" id="play" class="play-main">
                     ▶ Reproduzir
                 </button>
 
-                <button
-                    type="button"
-                    id="next"
-                    aria-label="Próxima etapa"
-                >
+                <button type="button" id="next" aria-label="Próxima etapa">
                     ⏭
                 </button>
 
@@ -428,114 +262,98 @@
                 SEQUÊNCIA DA JOGADA
             </p>
 
+
             <ol class="steps" id="steps">
 
                 <li data-step="0">
                     <button type="button">
-                        <strong>
-                            01 · Passe do jogador 1 para o 2
-                        </strong>
+                        <strong>01 · Passe do jogador 1 para o 2</strong>
 
                         <span>
-                            O jogador 1 bate o canto para o
-                            jogador 2 e desloca-se para o
-                            espaço entre os jogadores 3 e 4.
+                            O jogador 1 bate o canto para o jogador 2
+                            e corre em direção à posição inicial do
+                            jogador 4. O jogador 4 desloca-se para
+                            ficar entre os jogadores 3 e 1.
                         </span>
                     </button>
                 </li>
 
                 <li data-step="1">
                     <button type="button">
-                        <strong>
-                            02 · Passe do jogador 2 para o 3
-                        </strong>
+                        <strong>02 · Passe do jogador 2 para o 3</strong>
 
                         <span>
-                            O jogador 2 recebe a bola e
-                            passa em linha reta para o
-                            jogador 3, mais acima no campo.
+                            O jogador 2 recebe a bola e passa em
+                            linha reta para o jogador 3.
+                            O jogador 4 prepara-se para fingir
+                            que vai receber o passe seguinte.
                         </span>
                     </button>
                 </li>
 
                 <li data-step="2">
                     <button type="button">
-                        <strong>
-                            03 · Passe do jogador 3 para o 4
-                        </strong>
+                        <strong>03 · Passe do jogador 3 para o 1</strong>
 
                         <span>
-                            O jogador 3 passa para o jogador 4.
-                            O jogador 1 finge que vai receber,
-                            mas deixa a bola passar sem lhe tocar.
+                            O jogador 3 passa a bola para o jogador 1.
+                            O jogador 4 simula a receção, mas deixa
+                            a bola passar sem lhe tocar.
                         </span>
                     </button>
                 </li>
 
                 <li data-step="3">
                     <button type="button">
-                        <strong>
-                            04 · Movimento do jogador 1
-                        </strong>
+                        <strong>04 · Movimento do jogador 4</strong>
 
                         <span>
-                            Depois da finta, o jogador 1
-                            avança para o espaço livre
-                            entre os dois adversários
-                            da zona superior.
+                            Depois da finta, o jogador 4 avança
+                            em direção ao espaço livre entre
+                            os dois adversários, preparando-se
+                            para receber a bola.
                         </span>
                     </button>
                 </li>
 
                 <li data-step="4">
                     <button type="button">
-                        <strong>
-                            05 · Passe do jogador 4 para o 1
-                        </strong>
+                        <strong>05 · Passe do jogador 1 para o 4</strong>
 
                         <span>
-                            O jogador 4 passa para o jogador 1,
-                            que recebe antes de chegar
-                            completamente ao meio dos dois
-                            adversários.
+                            O jogador 1 passa a bola para o jogador 4,
+                            que recebe antes de chegar completamente
+                            ao meio dos dois adversários.
                         </span>
                     </button>
                 </li>
 
                 <li data-step="5">
                     <button type="button">
-                        <strong>
-                            06 · Remate do jogador 1
-                        </strong>
+                        <strong>06 · Remate do jogador 4</strong>
 
                         <span>
-                            O jogador 1 recebe e remata
-                            diretamente para a baliza,
-                            aproveitando o espaço criado.
+                            O jogador 4 recebe a bola no espaço criado
+                            e remata diretamente para a baliza.
                         </span>
                     </button>
                 </li>
 
             </ol>
 
+
             <div class="attention">
                 <strong>Pontos de atenção</strong>
-
                 <p>
-                    O jogador 1 deve chegar ao espaço entre
-                    os jogadores 3 e 4 a tempo da circulação
-                    da bola. Na terceira etapa, simula a
-                    receção sem tocar na bola. Depois ataca
-                    o espaço entre os defesas, recebe do
-                    jogador 4 e finaliza.
+                    O jogador 1 deve deslocar-se rapidamente para a zona
+                    do jogador 4 após cobrar o canto. O jogador 4 avança
+                    para o espaço entre os jogadores 3 e 1 e simula a
+                    receção do passe do jogador 3. Depois, ataca o espaço
+                    entre os defesas, recebe do jogador 1 e finaliza.
                 </p>
             </div>
 
-            <p
-                id="status"
-                class="status"
-                aria-live="polite"
-            >
+            <p id="status" class="status" aria-live="polite">
                 Pronto para iniciar.
             </p>
 
@@ -543,4 +361,5 @@
     </main>
 
 </body>
+
 </html>
