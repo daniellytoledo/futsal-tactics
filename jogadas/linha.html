@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Linha | Playbook</title>
+
+    <!-- Mesmos estilos do Canto 1 -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/canto-1.css">
+
+    <script src="../js/linha.js" defer></script>
+</head>
+
+<body class="tactic-page">
+
+    <header class="tactic-header">
+        <a href="../index.html" class="back-link">
+            ← Voltar ao início
+        </a>
+
+        <div>
+            <h1>LINHA</h1>
+            <p>Bola parada ofensiva · Lateral</p>
+        </div>
+
+        <span class="offense-pill">● Ofensivo</span>
+    </header>
+
+    <main class="tactic-layout">
+
+        <!-- QUADRO TÁTICO -->
+        <section
+            class="pitch-panel"
+            aria-label="Quadro tático animado"
+        >
+
+            <svg
+                id="pitch"
+                viewBox="0 0 1000 700"
+                role="img"
+                aria-label="Jogada Linha com quatro jogadores azuis, cinco defesas vermelhos e guarda-redes rosa"
+            >
+
+                <defs>
+                    <pattern
+                        id="grass"
+                        width="24"
+                        height="24"
+                        patternUnits="userSpaceOnUse"
+                    >
+                        <path
+                            d="M0 0H24V24H0Z"
+                            fill="#117a47"
+                        />
+
+                        <path
+                            d="M0 12H24"
+                            stroke="#fff"
+                            stroke-opacity=".025"
+                        />
+                    </pattern>
+
+                    <!-- Seta branca: corrida do jogador -->
+                    <marker
+                        id="white-arrow"
+                        markerWidth="8"
+                        markerHeight="8"
+                        refX="6"
+                        refY="3"
+                        orient="auto"
+                        markerUnits="strokeWidth"
+                    >
+                        <path
+                            d="M0 0L6 3L0 6"
+                            fill="none"
+                            stroke="#f5f8f1"
+                            stroke-width="1.7"
+                        />
+                    </marker>
+
+                    <!-- Seta verde: movimento da bola -->
+                    <marker
+                        id="green-arrow"
+                        markerWidth="8"
+                        markerHeight="8"
+                        refX="6"
+                        refY="3"
+                        orient="auto"
+                        markerUnits="strokeWidth"
+                    >
+                        <path
+                            d="M0 0L6 3L0 6"
+                            fill="none"
+                            stroke="#b9f36b"
+                            stroke-width="1.7"
+                        />
+                    </marker>
+                </defs>
+
+                <!-- CAMPO -->
+                <rect
+                    width="1000"
+                    height="700"
+                    fill="url(#grass)"
+                />
+
+                <!-- LINHAS DO CAMPO -->
+                <g
+                    class="pitch-lines"
+                    fill="none"
+                    stroke="#edf9ed"
+                    stroke-width="3.2"
+                >
+                    <rect
+                        x="5"
+                        y="5"
+                        width="990"
+                        height="690"
+                    />
+
+                    <path d="M500 5V695" />
+
+                    <circle cx="500" cy="350" r="76" />
+
+                    <circle
+                        cx="500"
+                        cy="350"
+                        r="3"
+                        fill="#edf9ed"
+                    />
+
+                    <!-- Áreas -->
+                    <path
+                        d="M5 120 A235 235 0 0 1 5 580
+                           M995 120 A235 235 0 0 0 995 580"
+                    />
+
+                    <path d="M995 265H958V435H995" />
+
+                    <path
+                        d="M995 5A34 34 0 0 0 961 39
+                           M995 695A34 34 0 0 1 961 661"
+                    />
+
+                    <path d="M5 265H42V435H5" />
+                </g>
+
+                <!-- BALIZA: IGUAL AO CANTO 1 -->
+                <g class="goal">
+                    <rect
+                        x="979"
+                        y="280"
+                        width="18"
+                        height="140"
+                        fill="#e8f4e8"
+                        fill-opacity=".13"
+                        stroke="white"
+                        stroke-width="3"
+                    />
+
+                    <path
+                        d="M985 281V420
+                           M991 281V420
+                           M979 295H997
+                           M979 311H997
+                           M979 327H997
+                           M979 343H997
+                           M979 359H997
+                           M979 375H997
+                           M979 391H997
+                           M979 407H997"
+                        stroke="#fff"
+                        stroke-opacity=".32"
+                    />
+                </g>
+
+                <!-- MARCA DO PENÁLTI -->
+                <circle
+                    cx="835"
+                    cy="350"
+                    r="4"
+                    fill="#edf9ed"
+                />
+
+                <!--
+                    SETAS DOS MOVIMENTOS
+
+                    1 - Jogador 4 leva o marcador ao canto.
+                    2 - Jogador 2 faz a finta curta.
+                    3 - Jogador 2 corre por trás da defesa
+                        enquanto o jogador 1 passa.
+                    4 - Jogador 2 remata.
+                -->
+                <g
+                    id="guides"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <!-- 1: Jogador 4 corre para o canto -->
+                    <path
+                        id="move4"
+                        class="movement"
+                        d="M815 320 L945 60"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 1: Defesa acompanha o jogador 4 -->
+                    <path
+                        id="moveDefender"
+                        class="movement"
+                        d="M868 320 L975 108"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 2: Pequena finta do jogador 2 -->
+                    <path
+                        id="move2Fake"
+                        class="movement"
+                        d="M628 320 L644 280"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 2/3: Corrida por trás da defesa -->
+                    <path
+                        id="move2Run"
+                        class="movement"
+                        d="M628 320
+                           L653 393
+                           L745 405
+                           L827 350"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 3: Passe do lateral para o penálti -->
+                    <path
+                        id="passGuide"
+                        class="ball-path"
+                        d="M750 43 L827 350"
+                        marker-end="url(#green-arrow)"
+                    />
+
+                    <!-- 4: Remate -->
+                    <path
+                        id="shotGuide"
+                        class="ball-path"
+                        d="M827 350 L981 345"
+                        marker-end="url(#green-arrow)"
+                    />
+
+                    <!-- Números das etapas -->
+                    <g class="guide-number">
+                        <circle cx="914" cy="191" r="16" />
+                        <text x="914" y="196">1</text>
+                    </g>
+
+                    <g class="guide-number">
+                        <circle cx="608" cy="270" r="16" />
+                        <text x="608" y="275">2</text>
+                    </g>
+
+                    <g class="guide-number">
+                        <circle cx="745" cy="435" r="16" />
+                        <text x="745" y="440">3</text>
+                    </g>
+
+                    <g class="guide-number">
+                        <circle cx="906" cy="321" r="16" />
+                        <text x="906" y="326">4</text>
+                    </g>
+
+                </g>
+
+                <!--
+                    ADVERSÁRIOS
+
+                    Três em frente aos jogadores 2, 3 e 4.
+                    Dois mais próximos do canto.
+                    Um acompanha a corrida do jogador 4.
+                -->
+                <g class="defenders">
+
+                    <!-- Defesa do jogador 2 -->
+                    <circle
+                        cx="665"
+                        cy="320"
+                        r="20"
+                    />
+
+                    <!-- Defesa do jogador 3 -->
+                    <circle
+                        cx="762"
+                        cy="320"
+                        r="20"
+                    />
+
+                    <!-- Defesa que acompanha o jogador 4 -->
+                    <circle
+                        id="defender4"
+                        cx="868"
+                        cy="320"
+                        r="20"
+                    />
+
+                    <!-- Defesas mais perto do canto -->
+                    <circle
+                        cx="866"
+                        cy="75"
+                        r="20"
+                    />
+
+                </g>
+
+                <!-- GUARDA-REDES -->
+                <g
+                    id="keeper"
+                    transform="translate(961 350)"
+                >
+                    <circle
+                        r="22"
+                        fill="#e81286"
+                        stroke="#fff"
+                        stroke-width="3"
+                    />
+
+                    <text y="6">GR</text>
+                </g>
+
+                <!-- JOGADOR 4 -->
+                <g
+                    id="player4"
+                    class="player"
+                    transform="translate(815 320)"
+                >
+                    <circle r="21" />
+                    <text y="7">4</text>
+                </g>
+
+                <!-- JOGADOR 3 -->
+                <g
+                    id="player3"
+                    class="player"
+                    transform="translate(731 320)"
+                >
+                    <circle r="21" />
+                    <text y="7">3</text>
+                </g>
+
+                <!-- JOGADOR 2 -->
+                <g
+                    id="player2"
+                    class="player"
+                    transform="translate(628 320)"
+                >
+                    <circle r="21" />
+                    <text y="7">2</text>
+                </g>
+
+                <!-- JOGADOR 1: COBRANÇA LATERAL -->
+                <g
+                    id="player1"
+                    class="player"
+                    transform="translate(750 18)"
+                >
+                    <circle r="21" />
+                    <text y="7">1</text>
+                </g>
+
+                <!-- BOLA -->
+                <g
+                    id="ball"
+                    transform="translate(750 43)"
+                >
+                    <circle
+                        r="11"
+                        fill="#fff"
+                        stroke="#15221b"
+                        stroke-width="2"
+                    />
+
+                    <path
+                        d="M0-5L5-2L3 4L-3 4L-5-2Z"
+                        fill="#15221b"
+                    />
+                </g>
+
+            </svg>
+
+            <!-- CONTROLOS -->
+            <div class="playback-controls">
+
+                <button type="button" id="restart">
+                    ↺ Reiniciar
+                </button>
+
+                <button
+                    type="button"
+                    id="previous"
+                    aria-label="Etapa anterior"
+                >
+                    ⏮
+                </button>
+
+                <button
+                    type="button"
+                    id="play"
+                    class="play-main"
+                >
+                    ▶ Reproduzir
+                </button>
+
+                <button
+                    type="button"
+                    id="next"
+                    aria-label="Próxima etapa"
+                >
+                    ⏭
+                </button>
+
+                <label>
+                    Velocidade
+
+                    <select id="speed">
+                        <option value="0.5">0,5×</option>
+                        <option value="1" selected>1×</option>
+                        <option value="1.5">1,5×</option>
+                    </select>
+                </label>
+            </div>
+
+            <p class="pitch-caption">
+                Setas tracejadas: deslocação dos jogadores ·
+                Setas verdes: trajetória da bola.
+            </p>
+
+        </section>
+
+        <!-- PAINEL LATERAL -->
+        <aside class="instructions">
+
+            <p class="aside-eyebrow">
+                SEQUÊNCIA DA JOGADA
+            </p>
+
+            <ol class="steps" id="steps">
+
+                <li data-step="0">
+                    <button type="button">
+                        <strong>
+                            01 · Jogador 4 afasta o marcador
+                        </strong>
+
+                        <span>
+                            O jogador 4 corre em direção ao
+                            canto, no mesmo lado da cobrança.
+                            O defensor acompanha-o,
+                            libertando o espaço na zona
+                            da marca do penálti.
+                        </span>
+                    </button>
+                </li>
+
+                <li data-step="1">
+                    <button type="button">
+                        <strong>
+                            02 · Finta e corrida do jogador 2
+                        </strong>
+
+                        <span>
+                            O jogador 2 dá um passo curto
+                            em direção ao jogador 1,
+                            como se fosse receber a bola.
+                            Regressa à posição inicial
+                            e começa a correr por trás
+                            dos adversários em direção
+                            à marca do penálti.
+                        </span>
+                    </button>
+                </li>
+
+                <li data-step="2">
+                    <button type="button">
+                        <strong>
+                            03 · Passe para o penálti
+                        </strong>
+
+                        <span>
+                            Quando o jogador 2 está a
+                            meio da corrida, o jogador 1
+                            passa a bola para a zona da
+                            marca do penálti. O jogador 2
+                            continua o movimento e chega
+                            ao espaço para receber.
+                        </span>
+                    </button>
+                </li>
+
+                <li data-step="3">
+                    <button type="button">
+                        <strong>
+                            04 · Remate do jogador 2
+                        </strong>
+
+                        <span>
+                            O jogador 2 recebe a bola
+                            na zona do penálti e remata
+                            diretamente para a baliza.
+                        </span>
+                    </button>
+                </li>
+
+            </ol>
+
+            <div class="attention">
+                <strong>Pontos de atenção</strong>
+
+                <p>
+                    O jogador 4 deve levar o seu marcador
+                    para longe da zona do penálti.
+                    A finta do jogador 2 é curta: apenas
+                    um passo e regresso. Depois, corre
+                    por trás da linha defensiva.
+                    O passe do jogador 1 deve sair
+                    quando o jogador 2 estiver a
+                    meio da corrida, para que receba
+                    em movimento e finalize.
+                </p>
+            </div>
+
+            <p
+                id="status"
+                class="status"
+                aria-live="polite"
+            >
+                Pronto para iniciar.
+            </p>
+
+        </aside>
+    </main>
+</body>
+</html>
