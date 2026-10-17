@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Cabo Verde | Playbook</title>
+
+    <!-- Mesmo estilo das outras jogadas -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/canto-1.css">
+
+    <script src="../js/cabo-verde.js" defer></script>
+
+    <!-- Apenas o menu de variantes é novo -->
+    <style>
+        .variant-menu {
+            display: grid;
+            gap: 9px;
+            margin-bottom: 24px;
+        }
+
+        .variant-menu label {
+            color: #b9f36b;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .15em;
+        }
+
+        .variant-menu select {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #b9f36b55;
+            border-radius: 9px;
+            background: #101612;
+            color: #f1f5ef;
+            font: inherit;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .variant-menu select:focus-visible {
+            outline: 2px solid #b9f36b;
+            outline-offset: 3px;
+        }
+
+        .variant-notice {
+            margin: 0 0 20px;
+            padding: 15px;
+            border: 1px solid #b9f36b44;
+            border-radius: 9px;
+            color: #cbd5ca;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .playback-controls button:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body class="tactic-page">
+
+    <header class="tactic-header">
+        <a href="../index.html" class="back-link">
+            ← Voltar ao início
+        </a>
+
+        <div>
+            <h1>CABO VERDE</h1>
+            <p>Bola parada defensiva · Lateral</p>
+        </div>
+
+        <span class="offense-pill">● Defensivo</span>
+    </header>
+
+    <main class="tactic-layout">
+
+        <!-- QUADRO TÁTICO -->
+        <section
+            class="pitch-panel"
+            aria-label="Quadro tático Cabo Verde"
+        >
+            <svg
+                id="pitch"
+                viewBox="0 0 1000 700"
+                role="img"
+                aria-label="Quatro jogadores azuis, quatro adversários vermelhos e guarda-redes amarelo"
+            >
+
+                <defs>
+                    <!-- Relva -->
+                    <pattern
+                        id="grass"
+                        width="24"
+                        height="24"
+                        patternUnits="userSpaceOnUse"
+                    >
+                        <rect
+                            width="24"
+                            height="24"
+                            fill="#117a47"
+                        />
+
+                        <path
+                            d="M0 12H24"
+                            stroke="white"
+                            stroke-opacity=".025"
+                        />
+                    </pattern>
+
+                    <!-- Seta dos jogadores -->
+                    <marker
+                        id="white-arrow"
+                        markerWidth="8"
+                        markerHeight="8"
+                        refX="6"
+                        refY="3"
+                        orient="auto"
+                        markerUnits="strokeWidth"
+                    >
+                        <path
+                            d="M0 0L6 3L0 6"
+                            fill="none"
+                            stroke="#f5f8f1"
+                            stroke-width="1.7"
+                        />
+                    </marker>
+
+                    <!-- Seta da bola -->
+                    <marker
+                        id="green-arrow"
+                        markerWidth="8"
+                        markerHeight="8"
+                        refX="6"
+                        refY="3"
+                        orient="auto"
+                        markerUnits="strokeWidth"
+                    >
+                        <path
+                            d="M0 0L6 3L0 6"
+                            fill="none"
+                            stroke="#b9f36b"
+                            stroke-width="1.7"
+                        />
+                    </marker>
+                </defs>
+
+                <!-- CAMPO -->
+                <rect
+                    width="1000"
+                    height="700"
+                    fill="url(#grass)"
+                />
+
+                <g
+                    class="pitch-lines"
+                    fill="none"
+                    stroke="#edf9ed"
+                    stroke-width="3.2"
+                >
+                    <rect x="5" y="5" width="990" height="690"/>
+
+                    <path d="M500 5V695"/>
+
+                    <circle cx="500" cy="350" r="76"/>
+
+                    <circle
+                        cx="500"
+                        cy="350"
+                        r="3"
+                        fill="#edf9ed"
+                    />
+
+                    <path
+                        d="M5 120 A235 235 0 0 1 5 580
+                           M995 120 A235 235 0 0 0 995 580"
+                    />
+
+                    <path d="M995 265H958V435H995"/>
+
+                    <path d="M5 265H42V435H5"/>
+
+                    <path
+                        d="M995 5A34 34 0 0 0 961 39
+                           M995 695A34 34 0 0 1 961 661"
+                    />
+                </g>
+
+                <!-- BALIZA DA NOSSA EQUIPA -->
+                <g class="goal">
+                    <rect
+                        x="979"
+                        y="280"
+                        width="18"
+                        height="140"
+                        fill="#e8f4e8"
+                        fill-opacity=".13"
+                        stroke="white"
+                        stroke-width="3"
+                    />
+
+                    <path
+                        d="M985 281V420
+                           M991 281V420
+                           M979 295H997
+                           M979 311H997
+                           M979 327H997
+                           M979 343H997
+                           M979 359H997
+                           M979 375H997
+                           M979 391H997
+                           M979 407H997"
+                        stroke="#fff"
+                        stroke-opacity=".32"
+                    />
+                </g>
+
+                <!-- SETAS DAS QUATRO ETAPAS -->
+                <g
+                    id="guides"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <!-- 1: Jogador 4 atravessa para o outro lado -->
+                    <path
+                        id="move4"
+                        class="movement"
+                        d="M550 60 L550 630"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 1: O seu marcador acompanha -->
+                    <path
+                        id="moveDefender"
+                        class="movement"
+                        d="M485 105 L485 600"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 2: Jogador 2 aproxima-se do lateral -->
+                    <path
+                        id="move2Slow"
+                        class="movement"
+                        d="M750 315 L750 68"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 2: Jogador 3 ocupa o espaço do 2 -->
+                    <path
+                        id="move3"
+                        class="movement"
+                        d="M760 445 L750 315"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 3: Jogador 2 corre pela linha -->
+                    <path
+                        id="move2Sprint"
+                        class="movement"
+                        d="M750 68 L545 68"
+                        marker-end="url(#white-arrow)"
+                    />
+
+                    <!-- 4: Passe paralelo à linha lateral -->
+                    <path
+                        id="passGuide"
+                        class="ball-path"
+                        d="M750 42 L545 68"
+                        marker-end="url(#green-arrow)"
+                    />
+
+                    <!-- Numeração -->
+                    <g class="guide-number">
+                        <circle cx="574" cy="363" r="16"/>
+                        <text x="574" y="368">1</text>
+                    </g>
+
+                    <g class="guide-number">
+                        <circle cx="726" cy="205" r="16"/>
+                        <text x="726" y="210">2</text>
+                    </g>
+
+                    <g class="guide-number">
+                        <circle cx="648" cy="94" r="16"/>
+                        <text x="648" y="99">3</text>
+                    </g>
+
+                    <g class="guide-number">
+                        <circle cx="640" cy="42" r="16"/>
+                        <text x="640" y="47">4</text>
+                    </g>
+
+                </g>
+
+                <!-- QUATRO ADVERSÁRIOS -->
+                <g class="defenders">
+
+                    <!-- Adversário que acompanha o jogador 4 -->
+                    <circle
+                        id="defender4"
+                        cx="485"
+                        cy="105"
+                        r="20"
+                    />
+
+                    <!-- Restantes adversários -->
+                    <circle cx="690" cy="180" r="20"/>
+
+                    <circle cx="688" cy="318" r="20"/>
+
+                    <circle cx="692" cy="445" r="20"/>
+
+                </g>
+
+                <!-- GUARDA-REDES AMARELO -->
+                <g
+                    id="keeper"
+                    transform="translate(930 350)"
+                >
+                    <circle
+                        r="22"
+                        fill="#f6d823"
+                        stroke="#fff"
+                        stroke-width="3"
+                    />
+
+                    <text
+                        y="6"
+                        style="fill:#101612"
+                    >GR</text>
+                </g>
+
+                <!-- JOGADOR 4 -->
+                <g
+                    id="player4"
+                    class="player"
+                    transform="translate(550 60)"
+                >
+                    <circle r="21"/>
+                    <text y="7">4</text>
+                </g>
+
+                <!-- JOGADOR 3 -->
+                <g
+                    id="player3"
+                    class="player"
+                    transform="translate(760 445)"
+                >
+                    <circle r="21"/>
+                    <text y="7">3</text>
+                </g>
+
+                <!-- JOGADOR 2 -->
+                <g
+                    id="player2"
+                    class="player"
+                    transform="translate(750 315)"
+                >
+                    <circle r="21"/>
+                    <text y="7">2</text>
+                </g>
+
+                <!-- JOGADOR 1: COBRANÇA LATERAL -->
+                <g
+                    id="player1"
+                    class="player"
+                    transform="translate(750 18)"
+                >
+                    <circle r="21"/>
+                    <text y="7">1</text>
+                </g>
+
+                <!-- BOLA -->
+                <g
+                    id="ball"
+                    transform="translate(750 42)"
+                >
+                    <circle
+                        r="11"
+                        fill="#fff"
+                        stroke="#15221b"
+                        stroke-width="2"
+                    />
+
+                    <path
+                        d="M0-5L5-2L3 4L-3 4L-5-2Z"
+                        fill="#15221b"
+                    />
+                </g>
+
+            </svg>
+
+            <!-- MESMOS CONTROLOS DO CANTO 1 -->
+            <div class="playback-controls">
+
+                <button type="button" id="restart">
+                    ↺ Reiniciar
+                </button>
+
+                <button
+                    type="button"
+                    id="previous"
+                    aria-label="Etapa anterior"
+                >
+                    ⏮
+                </button>
+
+                <button
+                    type="button"
+                    id="play"
+                    class="play-main"
+                >
+                    ▶ Reproduzir
+                </button>
+
+                <button
+                    type="button"
+                    id="next"
+                    aria-label="Próxima etapa"
+                >
+                    ⏭
+                </button>
+
+                <label>
+                    Velocidade
+
+                    <select id="speed">
+                        <option value="0.5">0,5×</option>
+                        <option value="1" selected>1×</option>
+                        <option value="1.5">1,5×</option>
+                    </select>
+                </label>
+
+            </div>
+
+            <p class="pitch-caption">
+                Setas tracejadas: deslocações ·
+                Setas verdes: passes.
+            </p>
+
+        </section>
+
+        <!-- PAINEL DIREITO -->
+        <aside class="instructions">
+
+            <!-- NOVO: SELETOR DE VARIANTES -->
+            <div class="variant-menu">
+
+                <label for="variant">
+                    ESCOLHER VARIANTE
+                </label>
+
+                <select id="variant">
+                    <option value="1">
+                        Variante 1
+                    </option>
+
+                    <option value="2">
+                        Variante 2 — por definir
+                    </option>
+
+                    <option value="3">
+                        Variante 3 — por definir
+                    </option>
+                </select>
+
+            </div>
+
+            <p class="aside-eyebrow">
+                SEQUÊNCIA DA JOGADA
+            </p>
+
+            <!-- Mensagem para variantes futuras -->
+            <p
+                id="variantNotice"
+                class="variant-notice"
+                hidden
+            >
+                Esta variante ainda não foi criada.
+                Quando definirmos os movimentos,
+                adicionaremos a animação aqui.
+            </p>
+
+            <!-- VARIANTE 1 -->
+            <ol class="steps" id="steps">
+
+                <li data-step="0">
+                    <button type="button">
+                        <strong>
+                            01 · Movimento do jogador 4
+                        </strong>
+
+                        <span>
+                            O jogador 4 desloca-se em
+                            linha reta para o outro lado
+                            do campo, levando consigo
+                            o adversário que o está
+                            a marcar.
+                        </span>
+                    </button>
+                </li>
+
+                <li data-step="1">
+                    <button type="button">
+                        <strong>
+                            02 · Aproximação do jogador 2
+                        </strong>
+
+                        <span>
+                            O jogador 2 aproxima-se
+                            lentamente do jogador 1,
+                            que está a cobrar a lateral.
+                            Ao mesmo tempo, o jogador 3
+                            avança para ocupar a posição
+                            inicial do jogador 2.
+                        </span>
+                    </button>
+                </li>
+
+                <li data-step="2">
+                    <button type="button">
+                        <strong>
+                            03 · Arranque do jogador 2
+                        </strong>
+
+                        <span>
+                            Ao chegar perto do jogador 1,
+                            o jogador 2 acelera em linha
+                            reta, paralelo à linha lateral,
+                            em direção ao campo adversário.
+                        </span>
+                    </button>
+                </li>
+
+                <li data-step="3">
+                    <button type="button">
+                        <strong>
+                            04 · Passe do jogador 1
+                        </strong>
+
+                        <span>
+                            O jogador 1 executa um passe
+                            em linha quase paralela
+                            à lateral, para os pés do
+                            jogador 2, que se encontra
+                            mais à frente após a corrida.
+                        </span>
+                    </button>
+                </li>
+
+            </ol>
+
+            <div class="attention" id="attention">
+                <strong>Pontos de atenção</strong>
+
+                <p>
+                    O jogador 4 deve arrastar o seu
+                    marcador para longe da zona da
+                    cobrança. O jogador 2 aproxima-se
+                    devagar, mas acelera assim que
+                    chega perto do jogador 1.
+                    O jogador 3 cobre o espaço deixado
+                    pelo jogador 2. O passe final deve
+                    acompanhar a corrida e chegar
+                    aos pés do jogador 2.
+                </p>
+            </div>
+
+            <p
+                id="status"
+                class="status"
+                aria-live="polite"
+            >
+                Pronto para iniciar.
+            </p>
+
+        </aside>
+    </main>
+
+</body>
+</html>
