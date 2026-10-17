@@ -1,0 +1,503 @@
+:root {
+    --bg: #07111d;
+    --bg-soft: #0d1b2b;
+    --panel: rgba(7, 17, 29, 0.92);
+    --panel-line: rgba(255, 255, 255, 0.08);
+    --text: #f4f7f2;
+    --muted: #b6c0ca;
+    --green: #b9f36b;
+    --green-2: #95e43f;
+    --blue: #1f66ff;
+    --red: #ff2a17;
+    --pink: #ff1f92;
+    --field: #0d8b43;
+    --field-dark: #0a7136;
+    --wood: #8a532b;
+    --white: #f3f7f2;
+    --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    --radius: 18px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background:
+        radial-gradient(circle at top center, #0f2941 0%, #08111c 42%, #050b13 100%);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.page {
+    width: min(1480px, calc(100% - 24px));
+    margin: 0 auto;
+    padding: 20px 0 24px;
+}
+
+.topbar {
+    display: grid;
+    grid-template-columns: 220px 1fr 160px;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.back-link {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 20px;
+    opacity: 0.95;
+}
+
+.back-link:hover {
+    opacity: 1;
+}
+
+.title-wrap {
+    text-align: center;
+}
+
+.title-wrap h1 {
+    margin: 0;
+    font-size: 64px;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+.title-wrap p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 20px;
+}
+
+.badge {
+    justify-self: end;
+    padding: 12px 20px;
+    border: 1px solid var(--green);
+    border-radius: 999px;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(330px, 0.95fr);
+    gap: 14px;
+}
+
+.board-card,
+.panel {
+    background: rgba(6, 13, 22, 0.72);
+    border: 1px solid var(--panel-line);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+}
+
+.board-card {
+    padding: 14px;
+}
+
+#pitch {
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+    overflow: hidden;
+    background: transparent;
+}
+
+.wood-frame {
+    fill: var(--wood);
+}
+
+.pitch-bg {
+    fill: var(--field);
+}
+
+.pitch-lines line,
+.pitch-lines circle,
+.pitch-lines path,
+.pitch-lines rect {
+    stroke: var(--white);
+    stroke-width: 4;
+    fill: none;
+}
+
+.pitch-lines .filled {
+    fill: var(--white);
+    stroke: none;
+}
+
+.goal-net {
+    fill: rgba(255, 255, 255, 0.12);
+}
+
+#pitch text {
+    fill: #ffffff;
+    font-weight: 700;
+    font-size: 28px;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+.keeper-label {
+    font-size: 18px;
+}
+
+.team-blue {
+    fill: var(--blue);
+    stroke: rgba(255, 255, 255, 0.85);
+    stroke-width: 4;
+}
+
+.team-red {
+    fill: var(--red);
+    stroke: rgba(255, 255, 255, 0.8);
+    stroke-width: 4;
+}
+
+.team-pink {
+    fill: var(--pink);
+    stroke: rgba(255, 255, 255, 0.85);
+    stroke-width: 4;
+}
+
+.ball {
+    fill: #ffffff;
+    stroke: #1a1a1a;
+    stroke-width: 2.5;
+}
+
+.ball-patch {
+    fill: #121212;
+}
+
+.ball-line {
+    fill: none;
+    stroke: #121212;
+    stroke-width: 1.4;
+}
+
+.movement,
+.ball-path {
+    fill: none;
+    opacity: 0;
+    transition: opacity 180ms ease;
+}
+
+.movement {
+    stroke: #f3f7f2;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 14 12;
+}
+
+.ball-path {
+    stroke: var(--green);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* etapa 1 */
+#guides.show-0 #ball1,
+#guides.show-0 #move1 {
+    opacity: 1;
+}
+
+/* etapa 2 */
+#guides.show-1 #ball2 {
+    opacity: 1;
+}
+
+/* etapa 3 */
+#guides.show-2 #ball3 {
+    opacity: 1;
+}
+
+/* etapa 4 */
+#guides.show-3 #move4 {
+    opacity: 1;
+}
+
+/* etapa 5 */
+#guides.show-4 #ball5 {
+    opacity: 1;
+}
+
+/* etapa 6 */
+#guides.show-5 #ball6 {
+    opacity: 1;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 8px 4px;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.control-btn,
+.play-btn,
+.round-btn,
+.tab,
+.steps-list button,
+select {
+    font: inherit;
+}
+
+.control-btn,
+.play-btn,
+.round-btn {
+    border: none;
+    cursor: pointer;
+    transition: transform 120ms ease, opacity 120ms ease, background 120ms ease;
+}
+
+.control-btn:hover,
+.play-btn:hover,
+.round-btn:hover,
+.steps-list button:hover {
+    transform: translateY(-1px);
+}
+
+.secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    padding: 18px 28px;
+    font-size: 18px;
+}
+
+.round-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-size: 28px;
+}
+
+.play-btn {
+    min-width: 184px;
+    padding: 18px 30px;
+    border-radius: 999px;
+    background: var(--green);
+    color: #10220d;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.speed-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 18px;
+}
+
+.speed-box select {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 17px;
+}
+
+.panel {
+    padding: 14px;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.tab {
+    padding: 18px 12px;
+    border: none;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    font-size: 18px;
+    cursor: default;
+}
+
+.tab.active {
+    background: var(--green);
+    color: #10220d;
+    font-weight: 700;
+}
+
+.status-line {
+    margin-bottom: 14px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--green);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.steps-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.steps-list li {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.steps-list li.active {
+    border-color: rgba(185, 243, 107, 0.4);
+    box-shadow: 0 0 0 1px rgba(185, 243, 107, 0.12) inset;
+}
+
+.steps-list button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    color: inherit;
+    border: none;
+    padding: 16px;
+    cursor: pointer;
+}
+
+.steps-list strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.steps-list span {
+    display: block;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.55;
+}
+
+.attention-box {
+    margin-top: 14px;
+    padding: 18px 18px 18px 20px;
+    border-radius: 18px;
+    border: 1px solid rgba(185, 243, 107, 0.18);
+    background: rgba(185, 243, 107, 0.05);
+}
+
+.attention-box h2 {
+    margin: 0 0 10px;
+    color: var(--green);
+    font-size: 26px;
+}
+
+.attention-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.attention-box li {
+    margin-bottom: 8px;
+    color: var(--text);
+    font-size: 18px;
+    line-height: 1.45;
+}
+
+@media (max-width: 1200px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .title-wrap h1 {
+        font-size: 48px;
+    }
+
+    .title-wrap p {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 760px) {
+    .page {
+        width: min(100%, calc(100% - 12px));
+        padding: 12px 0 18px;
+    }
+
+    .topbar {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .back-link,
+    .badge {
+        justify-self: center;
+    }
+
+    .title-wrap h1 {
+        font-size: 38px;
+    }
+
+    .title-wrap p {
+        font-size: 16px;
+    }
+
+    .controls {
+        justify-content: center;
+    }
+
+    .control-group {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .play-btn {
+        min-width: 160px;
+        font-size: 18px;
+    }
+
+    .secondary {
+        font-size: 16px;
+    }
+
+    .steps-list strong {
+        font-size: 20px;
+    }
+
+    .steps-list span,
+    .attention-box li,
+    .status-line {
+        font-size: 16px;
+    }
+
+    .tab {
+        font-size: 15px;
+        padding: 14px 8px;
+    }
+}

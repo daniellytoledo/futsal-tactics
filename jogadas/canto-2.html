@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canto 2 — Playbook</title>
+    <link rel="stylesheet" href="../css/canto-2.css" />
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <a class="back-link" href="../index.html">← Voltar ao início</a>
+
+            <div class="title-wrap">
+                <h1>CANTO 2</h1>
+                <p>Bola parada ofensiva - Canto</p>
+            </div>
+
+            <span class="badge">Ofensivo</span>
+        </header>
+
+        <main class="layout">
+            <section class="board-card">
+                <svg
+                    id="pitch"
+                    viewBox="0 0 1000 700"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-label="Quadro tático do Canto 2"
+                >
+                    <defs>
+                        <marker
+                            id="white-arrow"
+                            markerWidth="8"
+                            markerHeight="8"
+                            refX="6"
+                            refY="4"
+                            orient="auto"
+                            markerUnits="strokeWidth"
+                        >
+                            <path d="M0,0 L8,4 L0,8 Z" fill="#f3f7f2"></path>
+                        </marker>
+
+                        <marker
+                            id="green-arrow"
+                            markerWidth="8"
+                            markerHeight="8"
+                            refX="6"
+                            refY="4"
+                            orient="auto"
+                            markerUnits="strokeWidth"
+                        >
+                            <path d="M0,0 L8,4 L0,8 Z" fill="#b9f36b"></path>
+                        </marker>
+                    </defs>
+
+                    <!-- Moldura -->
+                    <rect x="0" y="0" width="1000" height="700" class="wood-frame"></rect>
+
+                    <!-- Campo -->
+                    <rect x="28" y="28" width="944" height="644" rx="2" class="pitch-bg"></rect>
+
+                    <!-- Linhas -->
+                    <g class="pitch-lines">
+                        <line x1="500" y1="28" x2="500" y2="672"></line>
+
+                        <circle cx="500" cy="350" r="98"></circle>
+                        <circle cx="500" cy="350" r="5" class="filled"></circle>
+
+                        <!-- Área direita -->
+                        <path d="M972 160 L905 160 L905 540 L972 540"></path>
+                        <path d="M972 250 L938 250 L938 450 L972 450"></path>
+                        <path d="M972 95 A120 120 0 0 0 852 215"></path>
+                        <path d="M972 605 A120 120 0 0 1 852 485"></path>
+
+                        <!-- Baliza -->
+                        <rect x="972" y="285" width="18" height="130" class="goal-net"></rect>
+
+                        <!-- Canto inferior direito -->
+                        <path d="M940 672 A32 32 0 0 0 972 640"></path>
+                    </g>
+
+                    <!-- Guias / setas -->
+                    <g id="guides" class="show-0">
+                        <!-- Movimentos dos jogadores -->
+                        <path
+                            id="move1"
+                            class="movement"
+                            d="M948 650 L812 208"
+                            marker-end="url(#white-arrow)"
+                        ></path>
+
+                        <path
+                            id="move4"
+                            class="movement"
+                            d="M812 208 L812 360"
+                            marker-end="url(#white-arrow)"
+                        ></path>
+
+                        <!-- Passes e remate -->
+                        <path
+                            id="ball1"
+                            class="ball-path"
+                            d="M948 650 L720 650"
+                            marker-end="url(#green-arrow)"
+                        ></path>
+
+                        <path
+                            id="ball2"
+                            class="ball-path"
+                            d="M720 650 L720 155"
+                            marker-end="url(#green-arrow)"
+                        ></path>
+
+                        <path
+                            id="ball3"
+                            class="ball-path"
+                            d="M720 155 L905 155"
+                            marker-end="url(#green-arrow)"
+                        ></path>
+
+                        <path
+                            id="ball5"
+                            class="ball-path"
+                            d="M905 155 L812 330"
+                            marker-end="url(#green-arrow)"
+                        ></path>
+
+                        <path
+                            id="ball6"
+                            class="ball-path"
+                            d="M812 330 L950 350"
+                            marker-end="url(#green-arrow)"
+                        ></path>
+                    </g>
+
+                    <!-- Jogadores azuis -->
+                    <g id="player1" transform="translate(948 650)">
+                        <circle r="22" class="team-blue"></circle>
+                        <text y="8">1</text>
+                    </g>
+
+                    <g id="player2" transform="translate(720 650)">
+                        <circle r="22" class="team-blue"></circle>
+                        <text y="8">2</text>
+                    </g>
+
+                    <g id="player3" transform="translate(720 155)">
+                        <circle r="22" class="team-blue"></circle>
+                        <text y="8">3</text>
+                    </g>
+
+                    <g id="player4" transform="translate(905 155)">
+                        <circle r="22" class="team-blue"></circle>
+                        <text y="8">4</text>
+                    </g>
+
+                    <!-- Adversários -->
+                    <g id="opp1" transform="translate(810 305)">
+                        <circle r="24" class="team-red"></circle>
+                    </g>
+
+                    <g id="opp2" transform="translate(902 270)">
+                        <circle r="24" class="team-red"></circle>
+                    </g>
+
+                    <g id="opp3" transform="translate(792 565)">
+                        <circle r="24" class="team-red"></circle>
+                    </g>
+
+                    <g id="opp4" transform="translate(920 585)">
+                        <circle r="20" class="team-red"></circle>
+                    </g>
+
+                    <!-- Guarda-redes -->
+                    <g id="keeper" transform="translate(930 368)">
+                        <circle r="20" class="team-pink"></circle>
+                        <text y="7" class="keeper-label">GR</text>
+                    </g>
+
+                    <!-- Bola -->
+                    <g id="ball" transform="translate(935 636)">
+                        <circle r="12" class="ball"></circle>
+                        <path
+                            d="M-4 -8 L4 -8 L8 -1 L4 7 L-4 7 L-8 -1 Z"
+                            class="ball-patch"
+                        ></path>
+                        <path d="M-4 -8 L0 -1 L4 -8" class="ball-line"></path>
+                        <path d="M-8 -1 L0 -1 L8 -1" class="ball-line"></path>
+                        <path d="M-4 7 L0 -1 L4 7" class="ball-line"></path>
+                    </g>
+                </svg>
+
+                <div class="controls">
+                    <button id="restart" type="button" class="control-btn secondary">
+                        Reiniciar
+                    </button>
+
+                    <div class="control-group">
+                        <button id="previous" type="button" class="round-btn">⏮</button>
+                        <button id="play" type="button" class="play-btn">▶ Reproduzir</button>
+                        <button id="next" type="button" class="round-btn">⏭</button>
+                    </div>
+
+                    <div class="speed-box">
+                        <label for="speed">Velocidade</label>
+                        <select id="speed">
+                            <option value="0.5">0.5x</option>
+                            <option value="1" selected>1x</option>
+                            <option value="1.5">1.5x</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="panel">
+                <div class="tabs">
+                    <button type="button" class="tab active">Sequência</button>
+                    <button type="button" class="tab">Por jogador</button>
+                    <button type="button" class="tab">Visão geral</button>
+                </div>
+
+                <div class="status-line" id="status">
+                    1/6 · Passe do jogador 1 para o jogador 2
+                </div>
+
+                <ol id="steps" class="steps-list">
+                    <li data-step="0" class="active">
+                        <button type="button">
+                            <strong>01 · Passe do 1 para o 2</strong>
+                            <span>
+                                O jogador 1 bate o canto com um passe em linha reta
+                                para o jogador 2. Ao mesmo tempo, começa a deslocar-se
+                                para o espaço entre os jogadores 3 e 4.
+                            </span>
+                        </button>
+                    </li>
+
+                    <li data-step="1">
+                        <button type="button">
+                            <strong>02 · Passe do 2 para o 3</strong>
+                            <span>
+                                O jogador 2 recebe e toca para o jogador 3,
+                                mantendo a circulação da bola.
+                            </span>
+                        </button>
+                    </li>
+
+                    <li data-step="2">
+                        <button type="button">
+                            <strong>03 · Passe do 3 para o 4</strong>
+                            <span>
+                                O jogador 3 passa para o jogador 4. O jogador 1
+                                faz o movimento de quem vai receber, mas deixa
+                                a bola passar.
+                            </span>
+                        </button>
+                    </li>
+
+                    <li data-step="3">
+                        <button type="button">
+                            <strong>04 · Ataque ao espaço do jogador 1</strong>
+                            <span>
+                                Após a finta, o jogador 1 acelera para o espaço
+                                vazio entre os dois adversários mais próximos.
+                            </span>
+                        </button>
+                    </li>
+
+                    <li data-step="4">
+                        <button type="button">
+                            <strong>05 · Passe do 4 para o 1</strong>
+                            <span>
+                                O jogador 4 devolve a bola para o jogador 1,
+                                que recebe antes de entrar totalmente no meio
+                                dos dois adversários.
+                            </span>
+                        </button>
+                    </li>
+
+                    <li data-step="5">
+                        <button type="button">
+                            <strong>06 · Remate do jogador 1</strong>
+                            <span>
+                                O jogador 1 cria espaço e remata diretamente
+                                à baliza.
+                            </span>
+                        </button>
+                    </li>
+                </ol>
+
+                <div class="attention-box">
+                    <h2>Pontos de atenção</h2>
+                    <ul>
+                        <li>O passe do canto para o jogador 2 deve ser rápido e preciso.</li>
+                        <li>O jogador 1 deve chegar ao centro entre os jogadores 3 e 4 no timing certo.</li>
+                        <li>Na etapa 3, o jogador 1 deve simular a receção sem tocar na bola.</li>
+                        <li>O ataque ao espaço entre os adversários deve ser explosivo.</li>
+                        <li>O passe do jogador 4 para o jogador 1 deve sair antes do fecho da defesa.</li>
+                        <li>O remate deve ser de primeira ou com preparação mínima.</li>
+                    </ul>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="../js/canto-2.js"></script>
+</body>
+</html>
