@@ -474,6 +474,7 @@ let awaitingNext = false;
 let gameFinished = false;
 
 let dragging = null;
+let selectedPlayer = null;
 
 const TARGET_TOLERANCE = 55;
 
@@ -625,8 +626,20 @@ function drawField() {
         const text = svgElement("text", { y: 8 });
         text.textContent = number;
 
-        group.appendChild(text);
-        el.players.appendChild(group);
+        // Área de toque invisível, maior que a jogadora.
+        group.appendChild(
+            svgElement("circle", {
+                r: 43,
+                fill: "transparent",
+                stroke: "none",
+                class: "touch-area"
+            })
+        );
+
+        // Círculo visível da jogadora.
+        group.appendChild(
+            svgElement("circle", { r: 23 })
+        );
     }
 
     updatePlayers();
@@ -711,6 +724,7 @@ function startGame() {
     awaitingNext = false;
     gameFinished = false;
     dragging = null;
+    selectedPlayer = null;
 
     el.gameTitle.textContent = activeTactic.name;
     el.resultPanel.hidden = true;
@@ -768,6 +782,7 @@ function showChallenge() {
 // 9. COMEÇAR A ARRASTAR
 // ==========================================
 
+
 function onPointerDown(event) {
     if (
         !activeTactic ||
@@ -777,59 +792,82 @@ function onPointerDown(event) {
         return;
     }
 
+    const task = currentTask();
+
+    if (!task) return;
+
     const group = event.target.closest(
         "[data-player]"
     );
 
-    if (!group) {
-        return;
-    }
+    // Se tocar numa jogadora:
+    if (group) {
 
-    const number = Number(
-        group.dataset.player
-    );
+        const number = Number(
+            group.dataset.player
+        );
 
-    const task = currentTask();
+        if (number !== task.player) {
+            setFeedback(
+                `Seleciona a jogadora ${task.player}.`,
+                true
+            );
+            return;
+        }
 
-    if (!task || number !== task.player) {
+        const pointer = pointerToPitch(event);
+
+        if (!pointer) return;
+
+        event.preventDefault();
+
+        const origin = copyPoint(
+            playerPositions[number]
+        );
+
+        dragging = {
+            number,
+            pointerId: event.pointerId,
+            origin,
+            offsetX: origin.x - pointer.x,
+            offsetY: origin.y - pointer.y,
+            moved: false
+        };
+
+        el.pitch.setPointerCapture(
+            event.pointerId
+        );
+
         setFeedback(
-            `Nesta etapa, movimenta a jogadora ${task.player}.`,
-            true
+            "Arrasta a jogadora ou toca no destino."
         );
 
         return;
     }
 
-    const pointer = pointerToPitch(event);
+    // Se já existe uma jogadora selecionada,
+    // permite posicioná-la tocando no campo.
+    if (selectedPlayer !== null) {
 
-    if (!pointer) {
-        return;
+        const pointer = pointerToPitch(event);
+
+        if (!pointer) return;
+
+        event.preventDefault();
+
+        playerPositions[selectedPlayer] = pointer;
+
+        selectedPlayer = null;
+
+        evaluatePosition(task.player);
     }
-
-    event.preventDefault();
-
-    const origin = copyPoint(
-        playerPositions[number]
-    );
-
-    dragging = {
-        number,
-        pointerId: event.pointerId,
-        origin,
-        offsetX: origin.x - pointer.x,
-        offsetY: origin.y - pointer.y
-    };
-
-    group.classList.add("dragging");
-
-    el.pitch.setPointerCapture(
-        event.pointerId
-    );
 }
+
 
 // ==========================================
 // 10. MOVIMENTAR A JOGADORA
 // ==========================================
+
 
 function onPointerMove(event) {
     if (
@@ -843,9 +881,26 @@ function onPointerMove(event) {
 
     const pointer = pointerToPitch(event);
 
-    if (!pointer) {
+    if (!pointer) return;
+
+    // Verifica se houve movimento suficiente.
+    const movement = distance(
+        pointer,
+        {
+            x: dragging.origin.x - dragging.offsetX,
+            y: dragging.origin.y - dragging.offsetY
+        }
+    );
+
+    if (movement < 10 && !dragging.moved) {
         return;
     }
+
+    dragging.moved = true;
+
+    // No telemóvel, apresenta a jogadora
+    // um pouco acima do dedo.
+    const isTouch = event.pointerType === "touch";
 
     playerPositions[dragging.number] = {
         x: clamp(
@@ -855,7 +910,8 @@ function onPointerMove(event) {
         ),
 
         y: clamp(
-            pointer.y + dragging.offsetY,
+            pointer.y + dragging.offsetY -
+            (isTouch ? 50 : 0),
             25,
             675
         )
@@ -864,48 +920,56 @@ function onPointerMove(event) {
     updatePlayers();
 }
 
+
+event.preventDefault();
+
+const pointer = pointerToPitch(event);
+
+if (!pointer) {
+    return;
+}
+
+playerPositions[dragging.number] = {
+    x: clamp(
+        pointer.x + dragging.offsetX,
+        25,
+        975
+    ),
+
+    y: clamp(
+        pointer.y + dragging.offsetY,
+        25,
+        675
+    )
+};
+
+updatePlayers();
+
 // ==========================================
 // 11. CONFIRMAR A POSIÇÃO
 // ==========================================
 
-function onPointerUp(event) {
-    if (
-        !dragging ||
-        event.pointerId !== dragging.pointerId
-    ) {
-        return;
-    }
 
-    const number = dragging.number;
-    const origin = dragging.origin;
-
-    if (
-        el.pitch.hasPointerCapture &&
-        el.pitch.hasPointerCapture(event.pointerId)
-    ) {
-        el.pitch.releasePointerCapture(
-            event.pointerId
-        );
-    }
-
-    dragging = null;
+function evaluatePosition(number, origin = null) {
 
     const task = currentTask();
 
-    if (!task) {
+    if (!task || awaitingNext) {
         return;
     }
 
     const position = playerPositions[number];
+
     const difference = distance(
         position,
         task.target
     );
 
-    // Resposta correta.
-    const tolerance = task.tolerance ?? TARGET_TOLERANCE;
+    const tolerance =
+        task.tolerance ?? TARGET_TOLERANCE;
 
     if (difference <= tolerance) {
+
         const penalty = wrongAttempts * 15;
         const hintPenalty = hintUsed ? 25 : 0;
 
@@ -916,7 +980,6 @@ function onPointerUp(event) {
 
         totalScore += points;
 
-        // Encaixa a jogadora na posição correta.
         playerPositions[number] = copyPoint(
             task.target
         );
@@ -924,7 +987,6 @@ function onPointerUp(event) {
         awaitingNext = true;
 
         el.score.textContent = totalScore;
-
         el.next.disabled = false;
         el.hint.disabled = true;
 
@@ -936,12 +998,18 @@ function onPointerUp(event) {
         setFeedback(
             `Posição correta! +${points} pontos.`
         );
+
     } else {
+
         wrongAttempts++;
 
-        // Regressa ao ponto de partida
-        // para repetir a tentativa.
-        playerPositions[number] = origin;
+        if (origin) {
+            playerPositions[number] = origin;
+        } else {
+            playerPositions[number] = copyPoint(
+                activeTactic.players[number]
+            );
+        }
 
         setFeedback(
             "Ainda não é essa a posição. " +
@@ -952,6 +1020,52 @@ function onPointerUp(event) {
 
     updatePlayers();
 }
+
+
+
+function onPointerUp(event) {
+    if (
+        !dragging ||
+        event.pointerId !== dragging.pointerId
+    ) {
+        return;
+    }
+
+    const {
+        number,
+        origin,
+        moved
+    } = dragging;
+
+    if (
+        el.pitch.hasPointerCapture(event.pointerId)
+    ) {
+        el.pitch.releasePointerCapture(
+            event.pointerId
+        );
+    }
+
+    dragging = null;
+
+    // Um toque sem arrastar seleciona a jogadora.
+    if (!moved) {
+
+        selectedPlayer = number;
+
+        setFeedback(
+            `Jogadora ${number} selecionada. ` +
+            "Agora toca na posição correta no campo."
+        );
+
+        return;
+    }
+
+    // Arrastar: avalia a posição final.
+    selectedPlayer = null;
+
+    evaluatePosition(number, origin);
+}
+
 
 // ==========================================
 // 12. CANCELAR O ARRASTO
@@ -1027,6 +1141,7 @@ function nextChallenge() {
     wrongAttempts = 0;
     hintUsed = false;
     awaitingNext = false;
+    selectedPlayer = null;
 
     showChallenge();
 }

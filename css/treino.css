@@ -780,6 +780,63 @@ footer > span {
     }
 }
 
+
+/* ==========================================
+   MELHORIAS PARA ARRASTAR NO TELEMÓVEL
+========================================== */
+
+/* Evita que o navegador interprete o arrasto
+   como scroll ou gesto de zoom do campo. */
+#trainingPitch {
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Amplia a área de seleção sem mudar
+   visualmente o tamanho das jogadoras. */
+.training-player .touch-area {
+    fill: transparent !important;
+    stroke: none !important;
+    pointer-events: all;
+}
+
+/* Destaca a jogadora que pode ser movida. */
+.training-player.draggable circle:not(.touch-area) {
+    stroke: #b9f36b;
+    stroke-width: 4;
+}
+
+/* Melhora a resposta visual no arrasto. */
+.training-player.dragging {
+    opacity: 0.85;
+}
+
+/* Mantém o campo no tamanho correto. */
+.pitch-container {
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    #trainingPitch {
+        touch-action: none;
+    }
+
+    .board-panel {
+        padding: 6px;
+    }
+
+    .pitch-container {
+        border-radius: 8px;
+    }
+
+    .board-footer {
+        gap: 12px;
+        font-size: 10px;
+    }
+}
+
+
 /* ==========================================
    ACESSIBILIDADE
 ========================================== */
