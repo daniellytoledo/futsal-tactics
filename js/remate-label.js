@@ -1,13 +1,10 @@
 
 /*
- * ==========================================
- * PLAYBOOK — MELHOR REMATADORA
- * ==========================================
+ * PLAYBOOK — JOGADORA DE MELHOR REMATE
  *
- * Adiciona uma etiqueta à jogadora
- * responsável pelo remate.
- *
- * Não altera os JavaScripts das animações.
+ * Canto 1: Jogadora 3
+ * Canto 2: Jogadora 4
+ * Linha: Jogadora 2
  */
 
 (() => {
@@ -24,74 +21,104 @@
 
     const playerNumber = shooters[page];
 
-    if (!playerNumber) {
-        return;
-    }
+    if (!playerNumber) return;
 
     const player = document.querySelector(
         `#player${playerNumber}`
     );
 
-    if (!player) {
-        return;
-    }
+    if (!player) return;
 
     const SVG_NS = "http://www.w3.org/2000/svg";
 
-    function createSVG(tag, attributes) {
+    function createSVG(tag, attributes = {}) {
         const element = document.createElementNS(
             SVG_NS,
             tag
         );
 
-        Object.entries(attributes).forEach(
-            ([key, value]) => {
-                element.setAttribute(key, String(value));
-            }
-        );
+        for (const [key, value] of Object.entries(attributes)) {
+            element.setAttribute(key, String(value));
+        }
 
         return element;
     }
 
-    // A etiqueta fica à esquerda da jogadora
-    // para evitar sair do campo junto à baliza.
+    // Dimensões da etiqueta
+    const width = 218;
+    const height = 36;
+
+    // Posicionada acima e à esquerda da jogadora
     const label = createSVG("g", {
         class: "shooter-label",
-        transform: "translate(-214 -49)",
+        transform: `translate(${-width - 12} -52)`,
         "pointer-events": "none"
     });
 
+    // Fundo da etiqueta
     const background = createSVG("rect", {
         x: 0,
         y: 0,
-        width: 205,
-        height: 31,
-        rx: 8,
+        width: width,
+        height: height,
+        rx: 9,
         fill: "#101612",
-        "fill-opacity": 0.94,
+        "fill-opacity": 0.96,
         stroke: "#b9f36b",
-        "stroke-width": 1.2
+        "stroke-width": 1.5
     });
 
+    // Texto — estilos inline têm prioridade
+    // sobre os seletores CSS das jogadas.
     const text = createSVG("text", {
-        x: 102.5,
-        y: 20,
-        "text-anchor": "middle",
-        "font-family": "Arial, sans-serif",
-        "font-size": 13,
-        "font-weight": 700,
-        fill: "#b9f36b",
-        stroke: "none"
+        x: width / 2,
+        y: height / 2,
+        "dominant-baseline": "middle",
+        "text-anchor": "middle"
     });
 
-    text.textContent =
-        "★ Jogadora de melhor remate";
+    text.textContent = "★ Jogadora de melhor remate";
+
+    text.style.setProperty(
+        "font-size",
+        "13px",
+        "important"
+    );
+
+    text.style.setProperty(
+        "font-family",
+        "Arial, sans-serif",
+        "important"
+    );
+
+    text.style.setProperty(
+        "font-weight",
+        "700",
+        "important"
+    );
+
+    text.style.setProperty(
+        "fill",
+        "#b9f36b",
+        "important"
+    );
+
+    text.style.setProperty(
+        "stroke",
+        "none",
+        "important"
+    );
+
+    // Evita deformação por regras de CSS existentes.
+    text.style.setProperty(
+        "letter-spacing",
+        "0px",
+        "important"
+    );
 
     label.appendChild(background);
     label.appendChild(text);
 
-    // Colocar a etiqueta dentro do grupo
-    // da jogadora faz com que acompanhe
-    // automaticamente todas as animações.
+    // A etiqueta acompanha a jogadora.
     player.appendChild(label);
 })();
