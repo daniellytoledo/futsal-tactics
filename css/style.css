@@ -219,6 +219,73 @@ h2 {
   letter-spacing: 0.12em;
 }
 
+
+/* ==========================================
+   CARTÃO — MODO TREINO
+========================================== */
+
+.training-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 26px;
+    padding: 21px;
+
+    background: rgba(185, 243, 107, 0.08);
+    border: 1px solid rgba(185, 243, 107, 0.35);
+    border-radius: 12px;
+
+    text-decoration: none;
+    color: var(--text);
+
+    transition:
+        background 180ms ease,
+        transform 180ms ease;
+}
+
+.training-link:hover {
+    background: rgba(185, 243, 107, 0.14);
+    transform: translateY(-2px);
+}
+
+.training-link-icon {
+    display: grid;
+    place-items: center;
+
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+
+    background: rgba(185, 243, 107, 0.12);
+    border-radius: 10px;
+
+    font-size: 23px;
+}
+
+.training-link-info {
+    display: grid;
+    flex: 1;
+    gap: 5px;
+}
+
+.training-link-info strong {
+    font-family: var(--font-display);
+    font-size: 17px;
+}
+
+.training-link-info small {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.training-link-arrow {
+    color: var(--accent);
+    font-size: 24px;
+}
+
+
 .footer > span:first-child { font-family: var(--font-display); color: var(--text); }
 
 @media (max-width: 560px) {

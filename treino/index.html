@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta
+        name="description"
+        content="Jogo de treino das jogadas de futsal do Playbook."
+    >
+
+    <title>Modo Treino | Playbook</title>
+
+    <link rel="stylesheet" href="../css/treino.css">
+    <script src="../js/treino.js" defer></script>
+</head>
+
+<body>
+    <div class="app">
+
+        <header class="topbar">
+            <a href="../index.html" class="brand">
+                <span class="brand-icon">↗</span>
+                PLAYBOOK<span class="accent">.</span>
+            </a>
+
+            <a href="../index.html" class="back-link">
+                ← Voltar às jogadas
+            </a>
+        </header>
+
+        <section class="hero">
+            <p class="eyebrow">PLAYBOOK · MODO TREINO</p>
+
+            <h1>
+                Conheces a tua <span>posição?</span>
+            </h1>
+
+            <p>
+                Escolhe uma jogada, arrasta as jogadoras
+                para as posições corretas e conquista
+                pontos para o desafio semanal.
+            </p>
+        </section>
+
+        <section class="setup" aria-label="Preparar treino">
+
+            <div class="field">
+                <label for="playerName">
+                    NOME DA JOGADORA
+                </label>
+
+                <input
+                    id="playerName"
+                    type="text"
+                    maxlength="24"
+                    placeholder="Ex.: Ana"
+                    autocomplete="nickname"
+                >
+            </div>
+
+            <div class="field">
+                <label for="tacticSelect">
+                    ESCOLHER JOGADA
+                </label>
+
+                <select id="tacticSelect">
+                    <option value="canto1">Canto 1</option>
+                    <option value="canto2">Canto 2</option>
+                    <option value="linha">Linha</option>
+                    <option value="cabo1">Cabo Verde · Variante 1</option>
+                    <option value="cabo2">Cabo Verde · Variante 2</option>
+                    <option value="cabo3">Cabo Verde · Variante 3</option>
+                    <option value="x">X · Saída pressionada</option>
+                </select>
+            </div>
+
+            <button id="startButton" class="primary-button">
+                Começar treino
+            </button>
+        </section>
+
+        <main class="game-layout">
+
+            <!-- QUADRO TÁTICO -->
+            <section class="board-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">QUADRO TÁTICO</p>
+                        <h2 id="gameTitle">Escolhe uma jogada</h2>
+                    </div>
+
+                    <span class="board-label">
+                        ARRASTAR E LARGAR
+                    </span>
+                </div>
+
+                <div class="pitch-container">
+                    <svg
+                        id="trainingPitch"
+                        viewBox="0 0 1000 700"
+                        aria-label="Campo interativo de futsal"
+                    >
+
+                        <defs>
+                            <pattern
+                                id="grass"
+                                width="40"
+                                height="40"
+                                patternUnits="userSpaceOnUse"
+                            >
+                                <rect
+                                    width="40"
+                                    height="40"
+                                    fill="#117b47"
+                                />
+
+                                <path
+                                    d="M0 20H40"
+                                    stroke="#ffffff"
+                                    stroke-opacity=".025"
+                                />
+                            </pattern>
+                        </defs>
+
+                        <!-- Campo -->
+                        <rect
+                            width="1000"
+                            height="700"
+                            fill="url(#grass)"
+                        />
+
+                        <!-- Marcações -->
+                        <g class="pitch-lines">
+                            <rect
+                                x="8"
+                                y="8"
+                                width="984"
+                                height="684"
+                            />
+
+                            <path d="M500 8V692"/>
+
+                            <circle cx="500" cy="350" r="76"/>
+                            <circle cx="500" cy="350" r="4"/>
+
+                            <path
+                                d="M8 120 A235 235 0 0 1 8 580"
+                            />
+
+                            <path
+                                d="M992 120 A235 235 0 0 0 992 580"
+                            />
+
+                            <path d="M992 265H955V435H992"/>
+                            <path d="M8 265H45V435H8"/>
+
+                            <path
+                                d="M992 8 A34 34 0 0 0 958 42"
+                            />
+
+                            <path
+                                d="M992 692 A34 34 0 0 1 958 658"
+                            />
+                        </g>
+
+                        <!-- Baliza -->
+                        <g class="goal">
+                            <rect
+                                x="978"
+                                y="280"
+                                width="19"
+                                height="140"
+                            />
+                        </g>
+
+                        <!-- Marca opcional de destino -->
+                        <circle
+                            id="targetZone"
+                            cx="500"
+                            cy="350"
+                            r="42"
+                            class="target-zone"
+                            visibility="hidden"
+                        />
+
+                        <!-- Adversárias -->
+                        <g id="defendersLayer"></g>
+
+                        <!-- Guarda-redes -->
+                        <g id="keeperLayer"></g>
+
+                        <!-- Bola -->
+                        <g id="ballLayer"></g>
+
+                        <!-- Jogadoras arrastáveis -->
+                        <g id="playersLayer"></g>
+                    </svg>
+                </div>
+
+                <div class="board-footer">
+                    <span>
+                        <i class="legend-dot blue"></i>
+                        Equipa
+                    </span>
+
+                    <span>
+                        <i class="legend-dot red"></i>
+                        Adversárias
+                    </span>
+
+                    <span>
+                        <i class="legend-dot keeper"></i>
+                        GR
+                    </span>
+                </div>
+            </section>
+
+            <!-- PAINEL DO DESAFIO -->
+            <aside class="challenge-panel">
+
+                <div class="score-header">
+                    <div>
+                        <p class="eyebrow">PONTUAÇÃO</p>
+                        <strong id="scoreValue">0</strong>
+                    </div>
+
+                    <div class="step-counter">
+                        <span id="stepCounter">0 / 0</span>
+                        <small>POSIÇÕES</small>
+                    </div>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressFill"></div>
+                </div>
+
+                <div class="challenge-content">
+
+                    <p class="eyebrow">DESAFIO ATUAL</p>
+
+                    <h2 id="challengeTitle">
+                        Pronta para começar?
+                    </h2>
+
+                    <p id="challengeDescription">
+                        Introduz o teu nome e escolhe
+                        a jogada para iniciar o treino.
+                    </p>
+
+                    <div
+                        id="feedback"
+                        class="feedback"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+                    <div class="game-actions">
+                        <button
+                            id="hintButton"
+                            class="secondary-button"
+                            disabled
+                        >
+                            Mostrar dica
+                        </button>
+
+                        <button
+                            id="nextButton"
+                            class="primary-button"
+                            disabled
+                        >
+                            Próxima posição
+                        </button>
+                    </div>
+
+                    <p class="help-text">
+                        Arrasta a jogadora indicada para
+                        o lugar correto. As posições são
+                        avaliadas com alguma tolerância.
+                        Usar uma dica reduz a pontuação.
+                    </p>
+                </div>
+
+                <div
+                    id="resultPanel"
+                    class="result-panel"
+                    hidden
+                >
+                    <p class="eyebrow">TREINO CONCLUÍDO</p>
+
+                    <h2 id="resultTitle">
+                        Jogada concluída!
+                    </h2>
+
+                    <p id="resultDescription"></p>
+
+                    <button
+                        id="retryButton"
+                        class="secondary-button"
+                    >
+                        Repetir jogada
+                    </button>
+                </div>
+
+            </aside>
+        </main>
+
+        <!-- CLASSIFICAÇÃO -->
+        <section class="ranking-section">
+
+            <div class="ranking-heading">
+                <div>
+                    <p class="eyebrow">COMPETIÇÃO DA EQUIPA</p>
+                    <h2>Classificação semanal</h2>
+                </div>
+
+                <span id="weekLabel" class="week-label"></span>
+            </div>
+
+            <p class="ranking-description">
+                Conta a melhor pontuação de cada jogada
+                durante a semana. Os resultados ficam
+                guardados neste navegador.
+            </p>
+
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>POS.</th>
+                            <th>JOGADORA</th>
+                            <th>JOGADAS</th>
+                            <th>PONTOS</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="rankingBody">
+                        <tr>
+                            <td colspan="4">
+                                Ainda não há resultados.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ranking-actions">
+                <button
+                    id="copyRanking"
+                    class="secondary-button"
+                >
+                    Copiar classificação
+                </button>
+            </div>
+
+            <p class="help-text">
+                Para competir usando telemóveis diferentes,
+                partilhem uma captura de ecrã ou o texto
+                da classificação. Esta versão não sincroniza
+                resultados entre dispositivos.
+            </p>
+        </section>
+
+        <footer>
+            PLAYBOOK<span class="accent">.</span>
+            <span>TRAIN · LEARN · PLAY</span>
+        </footer>
+
+    </div>
+</body>
+</html>
