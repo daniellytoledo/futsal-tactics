@@ -1,19 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="pt-PT">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta
-        name="description"
-        content="Jogo de treino das jogadas de futsal do Playbook."
-    >
+    <meta name="description" content="Jogo de treino das jogadas de futsal do Playbook.">
 
     <title>Modo Treino | Playbook</title>
 
-    <link rel="stylesheet" href="../css/treino.css">
-    <script src="../js/treino.js" defer></script>
+    <link rel="stylesheet" href="../css/treino.css?v=2">
+    <script src="../js/treino.js?v=2" defer></script>
 </head>
 
 <body>
@@ -51,13 +48,7 @@
                     NOME DA JOGADORA
                 </label>
 
-                <input
-                    id="playerName"
-                    type="text"
-                    maxlength="24"
-                    placeholder="Ex.: Ana"
-                    autocomplete="nickname"
-                >
+                <input id="playerName" type="text" maxlength="24" placeholder="Ex.: Ana" autocomplete="nickname">
             </div>
 
             <div class="field">
@@ -98,93 +89,47 @@
                 </div>
 
                 <div class="pitch-container">
-                    <svg
-                        id="trainingPitch"
-                        viewBox="0 0 1000 700"
-                        aria-label="Campo interativo de futsal"
-                    >
+                    <svg id="trainingPitch" viewBox="0 0 1000 700" aria-label="Campo interativo de futsal">
 
                         <defs>
-                            <pattern
-                                id="grass"
-                                width="40"
-                                height="40"
-                                patternUnits="userSpaceOnUse"
-                            >
-                                <rect
-                                    width="40"
-                                    height="40"
-                                    fill="#117b47"
-                                />
+                            <pattern id="grass" width="40" height="40" patternUnits="userSpaceOnUse">
+                                <rect width="40" height="40" fill="#117b47" />
 
-                                <path
-                                    d="M0 20H40"
-                                    stroke="#ffffff"
-                                    stroke-opacity=".025"
-                                />
+                                <path d="M0 20H40" stroke="#ffffff" stroke-opacity=".025" />
                             </pattern>
                         </defs>
 
                         <!-- Campo -->
-                        <rect
-                            width="1000"
-                            height="700"
-                            fill="url(#grass)"
-                        />
+                        <rect width="1000" height="700" fill="url(#grass)" />
 
                         <!-- Marcações -->
                         <g class="pitch-lines">
-                            <rect
-                                x="8"
-                                y="8"
-                                width="984"
-                                height="684"
-                            />
+                            <rect x="8" y="8" width="984" height="684" />
 
-                            <path d="M500 8V692"/>
+                            <path d="M500 8V692" />
 
-                            <circle cx="500" cy="350" r="76"/>
-                            <circle cx="500" cy="350" r="4"/>
+                            <circle cx="500" cy="350" r="76" />
+                            <circle cx="500" cy="350" r="4" />
 
-                            <path
-                                d="M8 120 A235 235 0 0 1 8 580"
-                            />
+                            <path d="M8 120 A235 235 0 0 1 8 580" />
 
-                            <path
-                                d="M992 120 A235 235 0 0 0 992 580"
-                            />
+                            <path d="M992 120 A235 235 0 0 0 992 580" />
 
-                            <path d="M992 265H955V435H992"/>
-                            <path d="M8 265H45V435H8"/>
+                            <path d="M992 265H955V435H992" />
+                            <path d="M8 265H45V435H8" />
 
-                            <path
-                                d="M992 8 A34 34 0 0 0 958 42"
-                            />
+                            <path d="M992 8 A34 34 0 0 0 958 42" />
 
-                            <path
-                                d="M992 692 A34 34 0 0 1 958 658"
-                            />
+                            <path d="M992 692 A34 34 0 0 1 958 658" />
                         </g>
 
                         <!-- Baliza -->
                         <g class="goal">
-                            <rect
-                                x="978"
-                                y="280"
-                                width="19"
-                                height="140"
-                            />
+                            <rect x="978" y="280" width="19" height="140" />
                         </g>
 
                         <!-- Marca opcional de destino -->
-                        <circle
-                            id="targetZone"
-                            cx="500"
-                            cy="350"
-                            r="42"
-                            class="target-zone"
-                            visibility="hidden"
-                        />
+                        <circle id="targetZone" cx="500" cy="350" r="42" class="target-zone" visibility="hidden" />
 
                         <!-- Adversárias -->
                         <g id="defendersLayer"></g>
@@ -250,27 +195,14 @@
                         a jogada para iniciar o treino.
                     </p>
 
-                    <div
-                        id="feedback"
-                        class="feedback"
-                        role="status"
-                        aria-live="polite"
-                    ></div>
+                    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
 
                     <div class="game-actions">
-                        <button
-                            id="hintButton"
-                            class="secondary-button"
-                            disabled
-                        >
+                        <button id="hintButton" class="secondary-button" disabled>
                             Mostrar dica
                         </button>
 
-                        <button
-                            id="nextButton"
-                            class="primary-button"
-                            disabled
-                        >
+                        <button id="nextButton" class="primary-button" disabled>
                             Próxima posição
                         </button>
                     </div>
@@ -283,11 +215,7 @@
                     </p>
                 </div>
 
-                <div
-                    id="resultPanel"
-                    class="result-panel"
-                    hidden
-                >
+                <div id="resultPanel" class="result-panel" hidden>
                     <p class="eyebrow">TREINO CONCLUÍDO</p>
 
                     <h2 id="resultTitle">
@@ -296,10 +224,7 @@
 
                     <p id="resultDescription"></p>
 
-                    <button
-                        id="retryButton"
-                        class="secondary-button"
-                    >
+                    <button id="retryButton" class="secondary-button">
                         Repetir jogada
                     </button>
                 </div>
@@ -347,10 +272,7 @@
             </div>
 
             <div class="ranking-actions">
-                <button
-                    id="copyRanking"
-                    class="secondary-button"
-                >
+                <button id="copyRanking" class="secondary-button">
                     Copiar classificação
                 </button>
             </div>
@@ -370,4 +292,5 @@
 
     </div>
 </body>
+
 </html>
